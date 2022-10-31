@@ -1,0 +1,3 @@
+[submodule "random-clash-contracts"]
+	path = random-clash-contracts
+	url = https://github.com/sgtchilipapi/random-clash-contracts.git

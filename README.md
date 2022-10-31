@@ -1,34 +1,85 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Random Clash
 
-## Getting Started
+A trustless Defi Role-Playing-Game on the blockchain.
 
-First, run the development server:
+This project is a complete system of a modern RPG except that it can be deployed on the blockchain for better security and transparency.
+It has:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+    Character Creation;
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    Character Stats;
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+    Items & Equipment;
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+    Crafting System;
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    Logic-based Battle System; and
 
-## Learn More
+    A working in-game economy leveraging secure Defi Practices.
 
-To learn more about Next.js, take a look at the following resources:
+An RPG system of such magnitude running on the blockchain can only be playable or fun if there is a secure way of generating verifiable randomness. One of the most important elements of RPG's or videogames in general are contingencies and random events or outcomes. Without them, everything will be deterministic (most specifically for blockchains) and prone to exploits. Moreover, its not fun.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Thanks to Chainlink Oracle Services for providing us a secure, easy and relatively cost-efficient way of generating randomness. Now games are viable to be played on the blockchain!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Playing Random Clash is free! To start clashing and clanking, you can mint a free NFT character <here>.
 
-## Deploy on Vercel
+# Character Guide
+You can choose a character from 6 different classes:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Viking:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    Woodcutter:
+
+    Trolls:
+
+    Mechanic:
+
+    Amphibian:
+
+    Graverobber:
+
+# Character Stats Guide
+Each character has a set of 3 attributes:
+
+    STR:
+
+    VIT:
+
+    DEX:
+
+# Items & Equipment Crafting Guide
+Crafting materials:
+
+BoomSteel ($BOOM!)
+
+ThumpIron ($THUMP!)
+
+ClinkGlass ($CLINK!)
+
+SnapLink ($SNAP!)
+
+
+Crafting catalysts:
+
+Yellow Sparkstone ($ySPARK)
+
+White Sparkstone ($wSPARK)
+
+Red Sparkstone ($rSPARK)
+
+Blue Sparkstone ($bSPARK)
+
+
+# Battle Guide
+
+# Defi Guide
+The $CLANK! token is the main currency in the game's defi ecosystem. It can only be earned by completing the quest in-game. However, once the token's total supply reaches 200,000, from then on it can only be earned by providing liquidity in the CLANK!-MATIC pair on SushiSwap and staking the LP in our forked MasterChefV2 contract.
+
+In-game items are crafting materials (ERC20 tokens) that can be earned either thru battling enemy monsters in dungeons or by way of providing liquidity in the material's token pairs.
+
+Materials such as $BOOM!, $THUMP!, $CLINK! and $SNAP! can only be earned in dungeons when defeating enemy monsters.
+
+Catalysts such as $ySPARK, $wSPARK, $rSPARK, $bSPARK can only be obtained by providing liquidity in the BOOM!-CLANK!, THUMP!-CLANK!, CLINK!-CLANK!, and SNAP!-CLANK! pairs respectively and exchanging the LP tokens with the catalysts in our own custom contract for that.
+
+
+
