@@ -8,16 +8,21 @@ import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
 
 export default function Home() {
 
-  async function getCharacterProps(){
+  async function query(){
     //console.log(await apis.core.equipments.transfer("0x6b4787A1A2aE3C31aeA3b24C36cFcFb390D946B6", "0x6b4787A1A2aE3C31aeA3b24C36cFcFb390D946B6", 1))
     // console.log(await apis.core.equipments.getEquipmentStats(1))
     // console.log(await apis.core.equipments.getEquipmentProperties(1))
     // await apis.periphery.eqpt_mngr.unequipAll(1)
     // console.log(`Equipped items: ${await apis.periphery.eqpt_mngr.getCharacterEquipments(1)}`)
-    await apis.periphery.routers.ctr_minter.requestCharacter(0,"gorogo","0.01")
+    // await apis.periphery.routers.ctr_minter.requestCharacter(0,"gorogo","0.01")
+    console.log(await apis.core.tokens.approve("thump","0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", "9"))
+    // console.log(await apis.core.tokens.approve("clank","0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", "9"))
+    // console.log(await apis.periphery.routers.eqpt_minter.getEquipmentRecipe(0))
+    // await apis.periphery.routers.eqpt_minter.requestEquipment(1,1,".01")
+    // await apis.periphery.routers.ctr_minter.requestCharacter(1, "asaf", ".01")
   }
 
-  async function mintCharacter(){
+  async function mint(){
     await apis.periphery.routers.ctr_minter.mintCharacter()
   }
 
@@ -31,10 +36,10 @@ export default function Home() {
 
       <main>
         <div>
-          <button onClick={getCharacterProps}>Check RPC</button>
+          <button onClick={query}>Check RPC</button>
         </div>
         <div>
-          <button onClick={mintCharacter}>mint</button>
+          <button onClick={mint}>mint</button>
         </div>
       </main>
       <footer>
