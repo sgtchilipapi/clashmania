@@ -15,7 +15,9 @@ const MyApp = (props) => {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={lightTheme}>
         <CssBaseline />
+        {/* Sticky Header for Title*/}
         <Component {...pageProps} />
+        {/* Sticky Footer for Buttons */}
       </ThemeProvider>
     </CacheProvider>
   );
