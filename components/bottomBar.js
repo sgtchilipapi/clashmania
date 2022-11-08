@@ -22,7 +22,7 @@ export default function BottomBar() {
         }}
         sx={{backgroundColor: 'info.dark' }}
       >
-        <Link href="/characters"><BottomNavigationAction label="CTRS" icon={<GroupIcon />}/></Link>
+        <BottomNavigationAction label="CTRS" icon={<Link href="/characters"><GroupIcon /></Link>}/>
         <BottomNavigationAction label="INVTY" icon={<BusinessCenterIcon />} />
         <BottomNavigationAction label="DUNGEONS" icon={<BalconyIcon />} />
         <BottomNavigationAction label="ARENA" icon={<StadiumIcon />} />
