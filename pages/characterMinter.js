@@ -36,14 +36,19 @@ export default function FixedContainer() {
             setRequestExists(true)
             setCharName(request._name)
             getFulfillment(request.request_id)
+        }else{
+            setIsLoading(false)
         }
-        setIsLoading(false)
     }
 
     const getFulfillment = async (request_id) => {
         const request = await c_apis.periphery.chainlink.ctrs_vrf.getRequestStatus(request_id)
         if(request.fulfilled){
             setReadyToMint(true)
+            setIsLoading(false)
+        }else{
+            setIsLoading(true)
+            listenToVRF()
         }
     }
 

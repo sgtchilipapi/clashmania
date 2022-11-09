@@ -5,7 +5,16 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Button } from '@mui/material';
 
+import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
+
+
 export default function FixedContainer() {
+  React.useEffect(()=>{
+    getCharactersOwned()
+  }, [])
+
+  const getCharactersOwned = async () => console.log(await s_apis.core.ctrs.getCharactersOwned(localStorage.getItem('wallet')))
+
   return (
     <React.Fragment>
       <CssBaseline />

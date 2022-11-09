@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Box, CircularProgress, Backdrop } from '@mui/material';
 
 export default function LoadingBackdrop(props) {
     return (
@@ -11,14 +9,16 @@ export default function LoadingBackdrop(props) {
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={props.isLoading}
             >
-                <Grid container>
-                    <Grid item xs={12} align='center' justify='center'>
-                        <CircularProgress color="secondary" />
+                <Box sx={{backgroundColor:'primary.main'}}>
+                    <Grid container sx={{p:2}}>
+                        <Grid item xs={12} align='center' justify='center'>
+                            <CircularProgress color="inherit" />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant="h6" textAlign='center' backgroundColor='primary.main'>{props.loadingText}</Typography>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="h6" textAlign='center' backgroundColor='primary.main'>{props.loadingText}</Typography>
-                    </Grid>
-                </Grid>
+                </Box>
 
 
             </Backdrop>
