@@ -72,7 +72,7 @@ function ResponsiveAppBar(props) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Select Character">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Characters" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Characters" src="/images/characters/0 Viking/Angry.png" />
               </IconButton>
             </Tooltip>
           </Box>

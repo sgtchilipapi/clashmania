@@ -13,6 +13,7 @@ import {
   configureChains,
   chain,
   defaultChains,
+  useConnect,
 } from 'wagmi'
 
 import { publicProvider } from 'wagmi/providers/public'
@@ -46,8 +47,8 @@ const clientSideEmotionCache = createEmotionCache();
 
 const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const [characterSelected, setCharacterSelected] = React.useState('C')
-  
+  const [characterSelected, setCharacterSelected] = React.useState(4)
+
   return (
     <WagmiConfig client={client}>
       <CacheProvider value={emotionCache}>

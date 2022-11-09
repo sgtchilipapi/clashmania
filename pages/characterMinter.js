@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Router from 'next/router'
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -11,7 +12,7 @@ import LoadingBackdrop from '../components/backdrop';
 import * as char_mint_lib from "../components/library/characterMintingLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
 
-export default function FixedContainer() {
+export default function FixedContainer(props) {
     const [charIndex, setCharIndex] = React.useState(0)
     const [charName, setCharName] = React.useState('')
     const [requestExists, setRequestExists] = React.useState(false)
@@ -19,7 +20,7 @@ export default function FixedContainer() {
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('Loading...')
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         getRequest()
 
     }, [])
@@ -32,53 +33,54 @@ export default function FixedContainer() {
         setLoadingText('Loading previous character mint request...')
         setIsLoading(true)
         const request = await c_apis.periphery.routers.ctr_minter.getRequest(localStorage.getItem('wallet'))
-        if(parseInt(request.request_id) > 0){
+        if (parseInt(request.request_id) > 0) {
             setRequestExists(true)
             setCharName(request._name)
             getFulfillment(request.request_id)
-        }else{
+        } else {
             setIsLoading(false)
         }
     }
 
     const getFulfillment = async (request_id) => {
         const request = await c_apis.periphery.chainlink.ctrs_vrf.getRequestStatus(request_id)
-        if(request.fulfilled){
+        if (request.fulfilled) {
             setReadyToMint(true)
             setIsLoading(false)
-        }else{
+        } else {
             setIsLoading(true)
             listenToVRF()
         }
     }
 
     const sendRequest = async () => {
-        try{
+        try {
             setLoadingText('Waiting for character creation request confirmation...')
             setIsLoading(true)
             await c_apis.periphery.routers.ctr_minter.requestCharacter(charIndex, charName, "0")
             setRequestExists(true)
             listenToVRF()
         }
-        catch{
+        catch {
             setIsLoading(false)
             alert('Failed to submit character creation request! You might have already submitted a request that should be minted first.')
         }
     }
 
     const mint = async () => {
-        try{
+        try {
             setLoadingText('Waiting for mint transaction confirmation...')
             setIsLoading(true)
             const mint_receipt = await c_apis.periphery.routers.ctr_minter.mintCharacter()
-            console.log(mint_receipt)
+            props.setCharacterSelected(parseInt(mint_receipt.logs[0].topics[3]))
             setRequestExists(false)
             setReadyToMint(false)
             setCharIndex(0)
             setCharName('')
             setIsLoading(false)
+            Router.push('/characterDetails')
         }
-        catch{
+        catch {
             setIsLoading(false)
             alert('Failed to mint character! You might not have any request to mint! Please submit a request first.')
         }
@@ -87,9 +89,9 @@ export default function FixedContainer() {
     const listenToVRF = async () => {
         setLoadingText('Waiting for VRF fulfillment...')
         const contract = await c_apis.periphery.chainlink.ctrs_vrf.getListener()
-        contract.on("RequestFulfilled", (request_id,numWords,user,experimental) => {
+        contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
             console.log(contract.listeners("RequestFulfilled"))
-            if(user == localStorage.getItem('wallet')){
+            if (user == localStorage.getItem('wallet')) {
                 setReadyToMint(true)
                 console.log('Request has been fulfilled by the VRF! The character NFT is ready to be minted!')
                 contract.removeAllListeners("RequestFulfilled");
@@ -102,8 +104,8 @@ export default function FixedContainer() {
     ///This function listens to any mint events emitted from the Characters NFT contract for experimental request only.
     const listenToMints = async () => {
         const contract = await c_apis.core.ctrs.getListener()
-        contract.on("CharacterMinted", (a,address,c,d) => {
-            if(address == localStorage.getItem('wallet')){
+        contract.on("CharacterMinted", (a, address, c, d) => {
+            if (address == localStorage.getItem('wallet')) {
                 setRequestExists(false)
                 contract.off("CharacterMinted")
             }
@@ -114,16 +116,14 @@ export default function FixedContainer() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <LoadingBackdrop isLoading={isLoading} loadingText={loadingText}/>
+            <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
             <Container fixed justify="center" align="center" maxWidth='xs'>
                 <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.dark' }} justify="center" align="center">
                     <Grid container>
                         <Grid item xs={12}>
                             <Typography variant="h6">Create Character</Typography>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body">{isLoading ? loadingText: ""}</Typography>
-                        </Grid>
+
                         <Grid item container xs={2} justify="center" align="center">
                             <Button onClick={prevChar}>{<ArrowBackIosIcon />}</Button>
                         </Grid>
@@ -142,26 +142,35 @@ export default function FixedContainer() {
                             <Typography variant="h6">{char_mint_lib.characterNames(charIndex)}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography variant="body">{char_mint_lib.characterDesc(charIndex)}</Typography>
+                            <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline' }}>{char_mint_lib.characterDesc(charIndex)}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography variant="body">{char_mint_lib.characterBonus(charIndex)}</Typography>
+                            <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline' }}>{char_mint_lib.characterBonus(charIndex)}</Typography>
                         </Grid>
-                        <Grid item xs={12} sx={{mt:1}}>
-                            <TextField
-                                disabled={requestExists}
-                                required
-                                id="outlined-required"
-                                label="Enter name"
-                                value={charName}
-                                onChange={handleChange}
-                            />
+                        <Grid item container xs={12} sx={{ mt: 1 }} align='center' justify='center'>
+                            <Grid item xs={12}>
+                                <Typography variant="body" sx={{ display: readyToMint ? 'inline' : 'none' }}>
+                                    {`Congratulations! ${charName} is ready to be minted! Please click mint below.`}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    disabled={requestExists}
+                                    required
+                                    id="outlined-required"
+                                    label="Enter name"
+                                    value={charName}
+                                    onChange={handleChange}
+                                    sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}
+                                />
+                            </Grid>
+
                         </Grid>
-                        
-                        <Grid item xs={12} sx={{mt:1}}>
+
+                        <Grid item xs={12} sx={{ mt: 1 }}>
                             {
-                                readyToMint ? <Button onClick={mint} variant="outlined">Mint</Button> : 
-                                <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Create</Button>
+                                readyToMint ? <Button onClick={mint} variant="outlined">Mint</Button> :
+                                    <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Create</Button>
                             }
                         </Grid>
                     </Grid>
