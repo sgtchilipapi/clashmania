@@ -9,10 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.5.1",
+    "@emotion/cache": "^11.10.5",
+    "@emotion/react": "^11.10.5",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.13",
+    "@openzeppelin/contracts": "^4.7.3",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.12.1",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.3",
     "next": "13.0.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "wagmi": "^0.7.12"
   }
 }
