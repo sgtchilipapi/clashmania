@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Link from 'next/link'
+import Router from 'next/router'
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -12,6 +12,8 @@ import WalletIcon from '@mui/icons-material/Wallet';
 export default function BottomBar() {
   const [value, setValue] = React.useState(0);
 
+  const toCharacters = () => Router.push('/characters')
+
   return (
     <Box sx={{ width: 'auto', position: 'fixed', bottom: 0, left: 0, right: 0}}>
       <BottomNavigation
@@ -22,7 +24,7 @@ export default function BottomBar() {
         }}
         sx={{backgroundColor: 'info.dark' }}
       >
-        <BottomNavigationAction label="CTRS" icon={<Link href="/characters"><GroupIcon /></Link>}/>
+        <BottomNavigationAction onClick={toCharacters} label="CTRS" icon={<GroupIcon />}/>
         <BottomNavigationAction label="INVTY" icon={<BusinessCenterIcon />} />
         <BottomNavigationAction label="DUNGEONS" icon={<BalconyIcon />} />
         <BottomNavigationAction label="ARENA" icon={<StadiumIcon />} />

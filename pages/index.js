@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css'
 // import { ethers } from 'hardhat'
 import WalletAuth from '../components/walletAuth'
 import { useAccount } from 'wagmi'
+import { Box } from '@mui/material'
 
 import React from 'react'
 import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
@@ -12,6 +13,7 @@ export default function Home() {
   const {address} = useAccount()
 
   return (
+    <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
     <div>
       <Head>
         <title >Random Clash App</title>
@@ -27,5 +29,6 @@ export default function Home() {
        
       </main>
     </div>
+    </Box>
   )
 }

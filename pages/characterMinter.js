@@ -22,7 +22,6 @@ export default function FixedContainer(props) {
 
     React.useEffect(() => {
         getRequest()
-
     }, [])
 
     const prevChar = () => setCharIndex(charIndex > 0 ? charIndex => charIndex - 1 : 0)
@@ -78,6 +77,7 @@ export default function FixedContainer(props) {
             setCharIndex(0)
             setCharName('')
             setIsLoading(false)
+            props.setCharacterIcon(localStorage.setItem('characterIcon', char_mint_lib.characterImages(charIndex)))
             Router.push('/characterDetails')
         }
         catch {
@@ -117,65 +117,67 @@ export default function FixedContainer(props) {
         <React.Fragment>
             <CssBaseline />
             <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
-            <Container fixed justify="center" align="center" maxWidth='xs'>
-                <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.dark' }} justify="center" align="center">
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Create Character</Typography>
-                        </Grid>
-
-                        <Grid item container xs={2} justify="center" align="center">
-                            <Button onClick={prevChar}>{<ArrowBackIosIcon />}</Button>
-                        </Grid>
-                        <Grid item xs={8} align="center">
-                            <Image
-                                src={char_mint_lib.characterImages(charIndex)}
-                                alt={char_mint_lib.characterNames(charIndex)}
-                                width={140}
-                                height={140}
-                            />
-                        </Grid>
-                        <Grid item container xs={2} justify="center" align="center">
-                            <Button onClick={nextChar}>{<ArrowForwardIosIcon />}</Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">{char_mint_lib.characterNames(charIndex)}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline' }}>{char_mint_lib.characterDesc(charIndex)}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline' }}>{char_mint_lib.characterBonus(charIndex)}</Typography>
-                        </Grid>
-                        <Grid item container xs={12} sx={{ mt: 1 }} align='center' justify='center'>
+            <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
+                <Container fixed justify="center" align="center" maxWidth='xs'>
+                    <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.dark' }} justify="center" align="center">
+                        <Grid container>
                             <Grid item xs={12}>
-                                <Typography variant="body" sx={{ display: readyToMint ? 'inline' : 'none' }}>
-                                    {`Congratulations! ${charName} is ready to be minted! Please click mint below.`}
-                                </Typography>
+                                <Typography variant="h6">Create Character</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    disabled={requestExists}
-                                    required
-                                    id="outlined-required"
-                                    label="Enter name"
-                                    value={charName}
-                                    onChange={handleChange}
-                                    sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}
+
+                            <Grid item container xs={2} justify="center" align="center">
+                                <Button onClick={prevChar} disabled={readyToMint ? true : false}>{<ArrowBackIosIcon />}</Button>
+                            </Grid>
+                            <Grid item xs={8} align="center">
+                                <Image
+                                    src={char_mint_lib.characterImages(charIndex)}
+                                    alt={char_mint_lib.characterNames(charIndex)}
+                                    width={140}
+                                    height={140}
                                 />
                             </Grid>
+                            <Grid item container xs={2} justify="center" align="center">
+                                <Button onClick={nextChar} disabled={readyToMint ? true : false}>{<ArrowForwardIosIcon />}</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="h6">{char_mint_lib.characterNames(charIndex)}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline', ml: 1, mr: 1 }}>{char_mint_lib.characterDesc(charIndex)}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline', ml: 1, mr: 1 }}>{char_mint_lib.characterBonus(charIndex)}</Typography>
+                            </Grid>
+                            <Grid item container xs={12} sx={{ mt: 1 }} align='center' justify='center'>
+                                <Grid item xs={12}>
+                                    <Typography variant="body" sx={{ display: readyToMint ? 'inline' : 'none', ml: 1, mr: 1 }}>
+                                        {`Congratulations! ${charName} is ready to be minted! Please click mint below.`}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        disabled={requestExists}
+                                        required
+                                        id="outlined-required"
+                                        label="Enter name"
+                                        value={charName}
+                                        onChange={handleChange}
+                                        sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}
+                                    />
+                                </Grid>
 
-                        </Grid>
+                            </Grid>
 
-                        <Grid item xs={12} sx={{ mt: 1 }}>
-                            {
-                                readyToMint ? <Button onClick={mint} variant="outlined">Mint</Button> :
-                                    <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Create</Button>
-                            }
+                            <Grid item xs={12} sx={{ mt: 1 }}>
+                                {
+                                    readyToMint ? <Button onClick={mint} variant="outlined">Mint</Button> :
+                                        <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Create</Button>
+                                }
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Box>
-            </Container>
+                    </Box>
+                </Container>
+            </Box>
         </React.Fragment>
     );
 }

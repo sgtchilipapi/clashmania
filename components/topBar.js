@@ -9,19 +9,14 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import BoltIcon from '@mui/icons-material/Bolt';
+import Router from 'next/router'
 
 function ResponsiveAppBar(props) {
-
-  const handleOpenUserMenu = (event) => {
-
-  };
-
-
+  const handleClick = () => Router.push('/characterDetails')
   return (
     <AppBar position="static" sx={{ backgroundColor: 'info.dark' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-
           <Link href="/"><BoltIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /></Link>
 
           <Typography
@@ -39,12 +34,10 @@ function ResponsiveAppBar(props) {
               textDecoration: 'none',
             }}
           >
-          
+
               RC
-        
+
           </Typography>
-
-
 
           <Link href="/"><BoltIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /></Link>
 
@@ -63,16 +56,16 @@ function ResponsiveAppBar(props) {
               textDecoration: 'none',
             }}
           >
-       
+
               RC
 
           </Typography>
 
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Select Character">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Characters" src="/images/characters/0 Viking/Angry.png" />
+            <Tooltip title="View Character Details">
+              <IconButton sx={{ p: 0 }} onClick={handleClick}>
+                <Avatar alt="Characters" src={props.characterIcon} />
               </IconButton>
             </Tooltip>
           </Box>

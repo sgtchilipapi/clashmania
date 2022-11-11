@@ -47,7 +47,14 @@ const clientSideEmotionCache = createEmotionCache();
 
 const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const [characterSelected, setCharacterSelected] = React.useState(4)
+  const [connectedWallet, setConnectedWallet] = React.useState('')
+  const [characterSelected, setCharacterSelected] = React.useState(0)
+  const [characterIcon, setCharacterIcon] = React.useState('')
+
+  React.useEffect(()=>{
+    setCharacterSelected(parseInt(localStorage.getItem('characterSelected')))
+    setCharacterIcon(localStorage.getItem('characterIcon'))
+  },[])
 
   return (
     <WagmiConfig client={client}>
@@ -55,14 +62,16 @@ const MyApp = (props) => {
         <ThemeProvider theme={lightTheme}>
           <CssBaseline />
           <TopBar 
-            characterSelected={characterSelected}
-            setCharacterSelected={setCharacterSelected}
+            characterIcon={characterIcon}
           />        
           <Component {...pageProps}
             characterSelected={characterSelected}
             setCharacterSelected={setCharacterSelected}
+            setCharacterIcon={setCharacterIcon}
           />
-          <BottomBar />
+          <BottomBar 
+            setConnectedWallet={setConnectedWallet}
+          />
         </ThemeProvider>
       </CacheProvider>
     </WagmiConfig>
