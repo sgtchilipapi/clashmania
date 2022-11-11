@@ -24,7 +24,11 @@ export default function EquipmentDialog(props) {
 
     const [eqptName, setEqptName] = React.useState('')
     const [eqptType, setEqptType] = React.useState('')
+<<<<<<< HEAD
     const [eqptImg, setEqptImg] = React.useState(COMM)
+=======
+    const [eqptImg, setEqptImg] = React.useState('')
+>>>>>>> f66ca43c3484fe530baad863904b1a1f5cff114a
     const [rarity, setRarity] = React.useState('')
     const [dominantStat, setDominantStat] = React.useState('')
     const [extremity, setExtremity] = React.useState('')
