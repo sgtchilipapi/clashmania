@@ -13,6 +13,7 @@ export default function BottomBar() {
   const [value, setValue] = React.useState(0);
 
   const toCharacters = () => Router.push('/characters')
+  const toEquipments = () => Router.push('/equipments')
 
   return (
     <Box sx={{ width: 'auto', position: 'fixed', bottom: 0, left: 0, right: 0}}>
@@ -25,7 +26,7 @@ export default function BottomBar() {
         sx={{backgroundColor: 'info.dark' }}
       >
         <BottomNavigationAction onClick={toCharacters} label="CTRS" icon={<GroupIcon />}/>
-        <BottomNavigationAction label="INVTY" icon={<BusinessCenterIcon />} />
+        <BottomNavigationAction onClick={toEquipments} label="INVTY" icon={<BusinessCenterIcon />} />
         <BottomNavigationAction label="DUNGEONS" icon={<BalconyIcon />} />
         <BottomNavigationAction label="ARENA" icon={<StadiumIcon />} />
         <BottomNavigationAction label="WLET" icon={<WalletIcon />} />

@@ -1,11 +1,22 @@
-export const getEquipmentImage = (equipment_type, rarity, dominant_stat) => {
-    let image_url
-    const [type_tag, type_image] = getEquipmentType(equipment_type, dominant_stat)
-    const [dominant_tag, dominant_stat_image] = getDominantStatTag(dominant_stat)
+export const equipmentNameAndImage = (equipment_type, rarity, dominant_stat, extremity) => {
+    let eqpt_name, image_url
     const [rarity_tag, rarity_image] = getRarityTag(rarity)
+    const [type_tag, type_image] = getEquipmentType(equipment_type, dominant_stat)
+    const extremity_tag = getExtremityTag(extremity)
+    const [dominant_tag, dominant_stat_image] = getDominantStatTag(dominant_stat)
 
     image_url = '/images/equipments/' + type_image + dominant_stat_image + rarity_image
-    return image_url
+    eqpt_name = rarity_tag + type_tag + 'of ' + extremity_tag + dominant_tag
+    return [eqpt_name, image_url]
+}
+
+export function getGeneralType(equipment_type) {
+    let type_tag
+    if(equipment_type == 0){type_tag = "WPN"}
+    if(equipment_type == 1){type_tag = "AMR "}
+    if(equipment_type == 2){type_tag = "HGR "}
+    if(equipment_type == 3){type_tag = "ACC"}
+    return type_tag
 }
 
 export function getEquipmentType(equipment_type, dominant_stat) {

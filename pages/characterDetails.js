@@ -77,6 +77,7 @@ export default function FixedContainer(props) {
     const getCharacterEquipments = async (character_id) => {
         setLoadingText('Loading character details...')
         const equipments = await apis.periphery.equipments.eqpt_mngr.getCharacterEquipments(character_id)
+        console.log(equipments)
         setWeapon(parseInt(equipments.weapon))
         setArmor(parseInt(equipments.armor))
         setHeadgear(parseInt(equipments.headgear))
@@ -213,21 +214,25 @@ export default function FixedContainer(props) {
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={weapon}
+                                        label='WPN'
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={armor}
+                                        label='AMR'
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={headgear}
+                                        label='HGR'
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={accessory}
+                                        label='ACC'
                                     />
                                 </Grid>
                             </Grid>
