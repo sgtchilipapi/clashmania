@@ -13,8 +13,10 @@ import LoadingBackdrop from '../components/backdrop';
 import * as eqpt_mint_lib from "../components/library/equipmentMintingLib"
 import * as recipe_lib from "../components/library/craftingRecipeLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
+import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
 
 export default function FixedContainer(props) {
+    const msgValue = '0'
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('Loading...')
     const [isUpdating, setIsUpdating] = React.useState(false)
@@ -41,10 +43,15 @@ export default function FixedContainer(props) {
     const [indirectAllowance, setIndirectAllowance] = React.useState(0)
     const [catalystAllowance, setCatalystAllowance] = React.useState(0)
 
+    const [didMintFree, setDidMintFree] = React.useState(true)
+    const [characterExp, setCharacterExp] = React.useState(0)
+
     React.useEffect(() => {
         getRequest()
         getUserBalances()
         getUserAllowances()
+        getMintedFreeStatus()
+        getCharacterExp()
     }, [])
 
     React.useEffect(() => {
@@ -61,6 +68,7 @@ export default function FixedContainer(props) {
         if (parseInt(request.request_id) > 0) {
             setRequestExists(true)
             getFulfillment(request.request_id)
+            setEqptIndex(parseInt(request.equipment_type))
         } else {
             setIsLoading(false)
         }
@@ -77,11 +85,61 @@ export default function FixedContainer(props) {
         }
     }
 
+    const approveTokens = async () => {
+        let tokensToApprove = 0
+        if (mainAllowance < mainAmount){tokensToApprove++}
+        if (indirectAllowance < indirectAmount){tokensToApprove++}
+        if (catalystAllowance < catalystAmount){tokensToApprove++}
+        let tokensBeingApproved = 1
+        setIsLoading(true)
+        try {
+            
+            if (mainAllowance < mainAmount) {
+                setLoadingText(`(${tokensBeingApproved}/${tokensToApprove}) Approving the minter contract for your $${mainTag} tokens.`)
+                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(mainMaterial), 'equipment_minter', '1000000')
+                tokensBeingApproved++
+            }
+
+            if (indirectAllowance < indirectAmount) {
+                setLoadingText(`(${tokensBeingApproved}/${tokensToApprove}) Approving the minter contract for your $${indirectTag} tokens.`)
+                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(indirectMaterial), 'equipment_minter', '1000000') 
+                tokensBeingApproved++
+            }
+
+            if (catalystAllowance < catalystAmount) {
+                setLoadingText(`(${tokensBeingApproved}/${tokensToApprove}) Approving the minter contract for your $${catalystTag} tokens.`)
+                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(catalyst), 'equipment_minter', '1000000') 
+            }
+            getUserAllowances(mainMaterial, indirectMaterial, catalyst)
+            setIsLoading(false)
+        } catch {
+            alert('Approving tokens failed! Please try again.')
+            setIsLoading(false)
+            getUserAllowances()
+        }
+
+
+    }
+
     const sendRequest = async () => {
         try {
-            setLoadingText('Waiting for equipment crafting request confirmation...')
+            setLoadingText('(1/2) Waiting for equipment crafting request confirmation...')
             setIsLoading(true)
-            await c_apis.periphery.routers.eqpt_minter.requestEquipment(eqptIndex, 1, '0')
+            await c_apis.periphery.routers.eqpt_minter.requestEquipment(eqptIndex, 1, msgValue)
+            setRequestExists(true)
+            listenToVRF()
+        }
+        catch {
+            setIsLoading(false)
+            alert('Failed to submit equipment crafting request! You might have already submitted a request that should be minted first.')
+        }
+    }
+
+    const sendRequestFree = async () => {
+        try {
+            setLoadingText('(1/2) Waiting for equipment crafting request confirmation...')
+            setIsLoading(true)
+            await c_apis.periphery.routers.eqpt_minter.requestEquipmentFree(props.characterSelected, eqptIndex, msgValue)
             setRequestExists(true)
             listenToVRF()
         }
@@ -94,7 +152,7 @@ export default function FixedContainer(props) {
     const mint = async () => {
         let listenerContract = await listenToMints()
         try {
-            setLoadingText('Waiting for mint transaction confirmation...')
+            setLoadingText('(1/1) Waiting for mint transaction confirmation...')
             setIsLoading(true)
             const mint_receipt = await c_apis.periphery.routers.eqpt_minter.mintEquipments()
             setRequestExists(false)
@@ -109,15 +167,12 @@ export default function FixedContainer(props) {
     }
 
     const listenToVRF = async () => {
-        setLoadingText('Waiting for VRF fulfillment...')
+        setLoadingText('(2/2) Waiting for VRF fulfillment...')
         const contract = await c_apis.periphery.chainlink.eqpts_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
-            console.log(contract.listeners("RequestFulfilled"))
             if (user == localStorage.getItem('wallet')) {
                 setReadyToMint(true)
-                console.log('Request has been fulfilled by the VRF! The equipment NFT is ready to be minted!')
                 contract.removeAllListeners("RequestFulfilled");
-                console.log(contract.listeners("RequestFulfilled"))
                 setIsLoading(false)
             }
         })
@@ -210,7 +265,7 @@ export default function FixedContainer(props) {
         const userAddress = localStorage.getItem('wallet')
         const allowance = await c_apis.core.tokens.allowance(recipe_lib.getMaterialName(material_index), userAddress, 'equipment_minter')
         setMainAllowance(allowance)
-        
+
     }
 
     const getIndirectAllowance = async (material_index) => {
@@ -227,24 +282,42 @@ export default function FixedContainer(props) {
 
     const getEnoughBalance = () => {
         let enough = true
-        if(mainBalance < mainAmount || indirectBalance < indirectAmount || catalystBalance < catalystAmount) enough = false
+        if (mainBalance < mainAmount || indirectBalance < indirectAmount || catalystBalance < catalystAmount) enough = false
         return enough
     }
 
     const getEnoughAllowance = () => {
         let enough = true
-        if(mainAllowance < mainAmount || indirectAllowance < indirectAmount || catalystAllowance < catalystAmount) enough = false
+        if (mainAllowance < mainAmount || indirectAllowance < indirectAmount || catalystAllowance < catalystAmount) enough = false
         return enough
     }
 
+    const getMintedFreeStatus = async () => {
+        if (props.characterSelected != undefined && props.characterSelected != 0) {
+            const minted = await c_apis.periphery.routers.eqpt_minter.characterMintedFree(props.characterSelected, eqptIndex)
+            setDidMintFree(minted)
+        }
+    }
+
+    const getCharacterExp = async () => {
+        if (props.characterSelected != undefined && props.characterSelected != 0) {
+            const character = await s_apis.core.ctrs.getCharacter(props.characterSelected)
+            const exp = character.exp
+            setCharacterExp(exp)
+        }
+    }
+
     const mintButton = (
-        readyToMint ? 
+        readyToMint ?
             <Button onClick={mint} variant="outlined">Mint</Button> :
-        getEnoughBalance() ? 
-            getEnoughAllowance() ? <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Craft</Button> :
-            <Button onClick={mint} variant="outlined">Approve Tokens</Button> :
-        <Button onClick={mint} variant="outlined" disabled={true}>Not enough balance</Button>
-            
+            (!didMintFree && characterExp > 200) ?
+                <Button onClick={sendRequestFree} variant="outlined" disabled={requestExists}>Craft Free</Button> :
+                getEnoughBalance() ?
+                    getEnoughAllowance() ?
+                        <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Craft</Button> :
+                        <Button onClick={approveTokens} variant="outlined">Approve Tokens</Button> :
+                    <Button variant="outlined" disabled={true}>Not enough balance</Button>
+
     )
 
 
@@ -293,7 +366,7 @@ export default function FixedContainer(props) {
                                 </Grid>
                             </Grid>
 
-                            <Grid item container xs={12} align='center' justify='center' sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}>
+                            <Grid item container xs={12} align='center' justify='center'>
                                 <Grid item xs={12} sx={{ mb: 2 }}>
                                     <Typography variant='body'>Required Materials:</Typography>
                                 </Grid>
@@ -311,31 +384,31 @@ export default function FixedContainer(props) {
                                 </Grid>
                             </Grid>
 
-                            <Grid item container xs={12} align='center' justify='center' sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}>
+                            <Grid item container xs={12} align='center' justify='center'>
                                 <Grid item xs={12} sx={{ mt: 2 }}>
                                     <Typography variant='body'>Your Balances:</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Typography variant='body'>{`${mainTag}`}</Typography>
+                                    <Typography variant='body' color={mainAllowance < mainAmount ? 'red' : 'primary.main'}>{`${mainTag}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Typography variant='body'>{`${indirectTag}`}</Typography>
+                                    <Typography variant='body' color={indirectAllowance < mainAmount ? 'red' : 'primary.main'}>{`${indirectTag}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Typography variant='body'>{`${catalystTag}`}</Typography>
+                                    <Typography variant='body' color={catalystAllowance < mainAmount ? 'red' : 'primary.main'}>{`${catalystTag}`}</Typography>
                                 </Grid>
                             </Grid>
-                            <Grid item container xs={12} align='center' justify='center' sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}>
+                            <Grid item container xs={12} align='center' justify='center'>
                                 <Grid item xs={4}>
-                                    <Typography variant='body' color={mainBalance < mainAmount ? 'red' : 'primary.main'}>{isUpdating ? `---`:`${mainBalance}`}</Typography>
+                                    <Typography variant='body' color={mainBalance < mainAmount ? 'red' : 'primary.main'}>{isUpdating ? `---` : `${mainBalance}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
 
-                                    <Typography variant='body' color={indirectBalance < indirectAmount ? 'red' : 'primary.main'}>{isUpdating ? `---`:`${indirectBalance}`}</Typography>
+                                    <Typography variant='body' color={indirectBalance < indirectAmount ? 'red' : 'primary.main'}>{isUpdating ? `---` : `${indirectBalance}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
 
-                                    <Typography variant='body' color={catalystBalance < catalystAmount ? 'red' : 'primary.main'}>{isUpdating ? `---`:`${catalystBalance}`}</Typography>
+                                    <Typography variant='body' color={catalystBalance < catalystAmount ? 'red' : 'primary.main'}>{isUpdating ? `---` : `${catalystBalance}`}</Typography>
                                 </Grid>
                             </Grid>
 

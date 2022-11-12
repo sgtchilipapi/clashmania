@@ -99,7 +99,7 @@ export default function EquipmentDialog(props) {
     const handleUnequip = async () => {
         try{
             setIsLoading(true)
-            setLoadingText('Waiting for the UNEQUIP transaction to be confirmed on the blockchain.')
+            setLoadingText('(1/1) Waiting for the UNEQUIP transaction to be confirmed on the blockchain.')
             await c_apis.periphery.equipments.eqpt_mngr.unequipItem(eqptId)
             await getEquipStatus(eqptId)
             setIsLoading(false)
@@ -135,7 +135,7 @@ export default function EquipmentDialog(props) {
         else {
             try{
                 setIsLoading(true)
-                setLoadingText('Waiting for the EQUIP transaction to be confirmed on the blockchain.')
+                setLoadingText('(1/1) Waiting for the EQUIP transaction to be confirmed on the blockchain.')
                 await c_apis.periphery.equipments.eqpt_mngr.equip(character, equipment)
                 setIsLoading(false)
                 getEquipStatus(eqptId)

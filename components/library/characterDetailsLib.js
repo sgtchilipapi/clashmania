@@ -25,7 +25,7 @@ export function getMood(index){
     if(index == 4){return "Mocking"}
     if(index == 5){return "Sad"}
     if(index == 6){return "Scared"}
-    if(index == 7){return "Stunning"}
+    if(index == 7){return "Stunned"}
     if(index == 8){return "Thoughtful"}
     if(index == 9){return "Upset"}
 }

@@ -36,6 +36,7 @@ export default function FixedContainer(props) {
             setRequestExists(true)
             setCharName(request._name)
             getFulfillment(request.request_id)
+            setCharIndex(parseInt(request.character_class))
         } else {
             setIsLoading(false)
         }
@@ -54,7 +55,7 @@ export default function FixedContainer(props) {
 
     const sendRequest = async () => {
         try {
-            setLoadingText('Waiting for character creation request confirmation...')
+            setLoadingText('(1/2) Waiting for character creation request confirmation...')
             setIsLoading(true)
             await c_apis.periphery.routers.ctr_minter.requestCharacter(charIndex, charName, "0")
             setRequestExists(true)
@@ -68,7 +69,7 @@ export default function FixedContainer(props) {
 
     const mint = async () => {
         try {
-            setLoadingText('Waiting for mint transaction confirmation...')
+            setLoadingText('(1/1) Waiting for mint transaction confirmation...')
             setIsLoading(true)
             const mint_receipt = await c_apis.periphery.routers.ctr_minter.mintCharacter()
             props.setCharacterSelected(parseInt(mint_receipt.logs[0].topics[3]))
@@ -87,7 +88,7 @@ export default function FixedContainer(props) {
     }
 
     const listenToVRF = async () => {
-        setLoadingText('Waiting for VRF fulfillment...')
+        setLoadingText('(2/2) Waiting for VRF fulfillment...')
         const contract = await c_apis.periphery.chainlink.ctrs_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
             console.log(contract.listeners("RequestFulfilled"))
