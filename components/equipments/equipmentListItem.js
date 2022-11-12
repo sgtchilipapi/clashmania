@@ -53,6 +53,7 @@ export default function EquipmentListItem(props) {
                 <ListItemButton>
                     <ListItemAvatar>
                         <Avatar
+                            variant='square'
                             alt={eqptName}
                             src={eqptImg}
                         />

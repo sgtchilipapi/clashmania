@@ -7,6 +7,10 @@ export const equipmentNameAndImage = (equipment_type, rarity, dominant_stat, ext
 
     image_url = '/images/equipments/' + type_image + dominant_stat_image + rarity_image
     eqpt_name = rarity_tag + type_tag + 'of ' + extremity_tag + dominant_tag
+    if(type_image == undefined){
+        image_url = '/images/equipments/WEAPONS/ATK/COMM.png'
+        eqpt_name = 'Equipment'
+    }
     return [eqpt_name, image_url]
 }
 

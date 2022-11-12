@@ -42,6 +42,10 @@ export default function FixedContainer(props) {
         getCharacterEnergy(props.characterSelected)
     }, [props.characterSelected])
 
+    React.useEffect(()=>{
+        updateCharacterEquipments(props.characterSelected)
+    },[props.equipmentsUpdated])
+
     const getCharacter = async (character_id) => {
         setIsLoading(true)
         setLoadingText('Loading character details...')
@@ -75,6 +79,7 @@ export default function FixedContainer(props) {
     }
 
     const getCharacterEquipments = async (character_id) => {
+        setIsLoading(true)
         setLoadingText('Loading character details...')
         const equipments = await apis.periphery.equipments.eqpt_mngr.getCharacterEquipments(character_id)
         console.log(equipments)
@@ -82,6 +87,11 @@ export default function FixedContainer(props) {
         setArmor(parseInt(equipments.armor))
         setHeadgear(parseInt(equipments.headgear))
         setAccessory(parseInt(equipments.accessory))
+    }
+
+    const updateCharacterEquipments = async (character_id) => {
+        await getCharacterEquipments(props.characterSelected)
+        setIsLoading(false)
     }
 
     const getCharacterEnergy = async(character_id) => {
@@ -215,24 +225,32 @@ export default function FixedContainer(props) {
                                     <EquipmentItem
                                         equipment_id={weapon}
                                         label='WPN'
+                                        setEquipmentSelected={props.setEquipmentSelected}
+                                        setEquipmentOpenDialog={props.setEquipmentOpenDialog}
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={armor}
                                         label='AMR'
+                                        setEquipmentSelected={props.setEquipmentSelected}
+                                        setEquipmentOpenDialog={props.setEquipmentOpenDialog}
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={headgear}
                                         label='HGR'
+                                        setEquipmentSelected={props.setEquipmentSelected}
+                                        setEquipmentOpenDialog={props.setEquipmentOpenDialog}
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <EquipmentItem
                                         equipment_id={accessory}
                                         label='ACC'
+                                        setEquipmentSelected={props.setEquipmentSelected}
+                                        setEquipmentOpenDialog={props.setEquipmentOpenDialog}
                                     />
                                 </Grid>
                             </Grid>

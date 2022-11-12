@@ -5,6 +5,8 @@ import createEmotionCache from '../utility/createEmotionCache';
 import lightTheme from '../styles/theme/lightTheme';
 import '../styles/globals.css';
 
+import EquipmentDialog from '../components/equipments/equipmentDetails';
+
 import networks from '../random-clash-contracts/app-config/networks';
 
 import {
@@ -49,29 +51,41 @@ const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [connectedWallet, setConnectedWallet] = React.useState('')
   const [characterSelected, setCharacterSelected] = React.useState(0)
+  const [equipmentSelected, setEquipmentSelected] = React.useState(0)
   const [characterIcon, setCharacterIcon] = React.useState('')
-
-  React.useEffect(()=>{
-    setCharacterSelected(parseInt(localStorage.getItem('characterSelected')))
-    setCharacterIcon(localStorage.getItem('characterIcon'))
-  },[])
+  const [equipmentOpenDialog, setEquipmentOpenDialog] = React.useState(false)
+  const [equipmentsUpdated, setEquipmentsUpdated] = React.useState(0)
 
   return (
     <WagmiConfig client={client}>
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={lightTheme}>
           <CssBaseline />
-          <TopBar 
+          <TopBar
             characterIcon={characterIcon}
-          />        
+          />
           <Component {...pageProps}
             characterSelected={characterSelected}
             setCharacterSelected={setCharacterSelected}
             setCharacterIcon={setCharacterIcon}
+            equipmentSelected={equipmentSelected}
+            setEquipmentSelected={setEquipmentSelected}
+            equipmentOpenDialog={equipmentOpenDialog}
+            setEquipmentOpenDialog={setEquipmentOpenDialog}
+            equipmentsUpdated={equipmentsUpdated}
+            setEquipmentsUpdated={setEquipmentsUpdated}
           />
-          <BottomBar 
+          <BottomBar
             setConnectedWallet={setConnectedWallet}
           />
+          <EquipmentDialog
+              equipmentSelected={equipmentSelected}
+              equipmentOpenDialog={equipmentOpenDialog}
+              setEquipmentOpenDialog={setEquipmentOpenDialog}
+              characterSelected={characterSelected}
+              setCharacterSelected={setCharacterSelected}
+              setEquipmentsUpdated={setEquipmentsUpdated}
+            />
         </ThemeProvider>
       </CacheProvider>
     </WagmiConfig>
