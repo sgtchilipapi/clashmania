@@ -14,6 +14,7 @@ import LoadingBackdrop from '../components/backdrop';
 
 import * as eqpt_mint_lib from "../components/library/equipmentMintingLib"
 import * as recipe_lib from "../components/library/craftingRecipeLib"
+import * as tokens_lib from "../components/library/tokensLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
 import ConnectButton from '../components/wallet/connectButton';
@@ -32,12 +33,18 @@ export default function FixedContainer(props) {
     const [mainMaterial, setMainMaterial] = React.useState(0)
     const [indirectMaterial, setIndirectMaterial] = React.useState(1)
     const [catalyst, setCatalyst] = React.useState(0)
+
     const [mainAmount, setMainAmount] = React.useState(0)
     const [indirectAmount, setIndirectAmount] = React.useState(0)
     const [catalystAmount, setCatalystAmount] = React.useState(0)
+
     const [mainTag, setMainTag] = React.useState(0)
     const [indirectTag, setIndirectTag] = React.useState(0)
     const [catalystTag, setCatalystTag] = React.useState(0)
+
+    const [mainImage, setMainImage] = React.useState('')
+    const [indirectImage, setIndirectImage] = React.useState('')
+    const [catalystImage, setCatalystImage] = React.useState('')
 
     const [mainBalance, setMainBalance] = React.useState(0)
     const [indirectBalance, setIndirectBalance] = React.useState(0)
@@ -230,6 +237,9 @@ export default function FixedContainer(props) {
         setMainTag(recipe.main_tag)
         setIndirectTag(recipe.indirect_tag)
         setCatalystTag(recipe.catalyst_tag)
+        setMainImage(tokens_lib.getTokenImageByName(recipe.main_name))
+        setIndirectImage(tokens_lib.getTokenImageByName(recipe.indirect_name))
+        setCatalystImage(tokens_lib.getTokenImageByName(recipe.catalyst_name))
         if (address) {
             getUserBalances(recipe.main_material, recipe.indirect_material, recipe.catalyst)
             getUserAllowances(recipe.main_material, recipe.indirect_material, recipe.catalyst)
@@ -361,8 +371,8 @@ export default function FixedContainer(props) {
                                 <Image
                                     src={eqpt_mint_lib.equipmentImages(eqptIndex)}
                                     alt={eqpt_mint_lib.equipmentNames(eqptIndex)}
-                                    width={140}
-                                    height={140}
+                                    width={90}
+                                    height={90}
                                 />
                             </Grid>
                             <Grid item container xs={2} justify="center" align="center">
@@ -392,15 +402,15 @@ export default function FixedContainer(props) {
                                     <Typography variant='body'>Required Materials:</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Avatar />
+                                    <Avatar src={mainImage} variant='square'/>
                                     <Typography variant='body'>{`${mainAmount} ${mainTag}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Avatar />
+                                    <Avatar src={indirectImage} variant='square' />
                                     <Typography variant='body'>{`${indirectAmount} ${indirectTag}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Avatar />
+                                    <Avatar src={catalystImage} variant='square' />
                                     <Typography variant='body'>{`${catalystAmount} ${catalystTag}`}</Typography>
                                 </Grid>
                             </Grid>

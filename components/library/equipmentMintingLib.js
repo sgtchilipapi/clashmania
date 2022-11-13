@@ -1,10 +1,3 @@
-export function equipmentImages(index) {
-    if(index == 0)return "/images/characters/0 Viking/Angry.png"
-    if(index == 1)return "/images/characters/1 Woodcutter/Angry.png"
-    if(index == 2)return "/images/characters/2 Troll/Angry.png"
-    if(index == 3)return "/images/characters/3 Mechanic/Angry.png"
-}
-
 export function equipmentNames(index) {
     if(index == 0)return "a Weapon"
     if(index == 1)return "an Armor"
@@ -25,4 +18,11 @@ export function equipmentName(index) {
     if(index == 1)return `armor`
     if(index == 2)return `headgear`
     if(index == 3)return "accessory"
+}
+
+export function equipmentImages(index){
+    if(index == 0)return `/images/equipments/WEAPONS/PEN/UNIQ.png`
+    if(index == 1)return `/images/equipments/ARMORS/DEF/UNIQ.png`
+    if(index == 2)return `/images/equipments/HELMS/CRIT/UNIQ.png`
+    if(index == 3)return "/images/equipments/ACCESSORIES/PEN/UNIQ.png"
 }

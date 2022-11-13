@@ -76,6 +76,7 @@ const MyApp = (props) => {
         <ThemeProvider theme={lightTheme}>
           <CssBaseline />
           <TopBar
+            characterSelected={characterSelected}
             characterIcon={characterIcon}
           />
           <Component {...pageProps}
