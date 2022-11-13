@@ -49,8 +49,10 @@ export default function EquipmentDialog(props) {
     };
 
     React.useEffect(() => {
-        setIsLoading(true)
-        setEquipmentDetails(props.equipmentSelected)
+        if(props.equipmentSelected){
+            setIsLoading(true)
+            setEquipmentDetails(props.equipmentSelected)
+        }
     }, [props.equipmentSelected])
 
 

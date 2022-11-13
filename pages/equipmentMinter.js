@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Router from 'next/router'
+import { useAccount } from 'wagmi'
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -12,10 +14,13 @@ import LoadingBackdrop from '../components/backdrop';
 
 import * as eqpt_mint_lib from "../components/library/equipmentMintingLib"
 import * as recipe_lib from "../components/library/craftingRecipeLib"
+import * as tokens_lib from "../components/library/tokensLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
+import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
+    const { address } = useAccount()
     const msgValue = '0'
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('Loading...')
@@ -28,12 +33,18 @@ export default function FixedContainer(props) {
     const [mainMaterial, setMainMaterial] = React.useState(0)
     const [indirectMaterial, setIndirectMaterial] = React.useState(1)
     const [catalyst, setCatalyst] = React.useState(0)
+
     const [mainAmount, setMainAmount] = React.useState(0)
     const [indirectAmount, setIndirectAmount] = React.useState(0)
     const [catalystAmount, setCatalystAmount] = React.useState(0)
+
     const [mainTag, setMainTag] = React.useState(0)
     const [indirectTag, setIndirectTag] = React.useState(0)
     const [catalystTag, setCatalystTag] = React.useState(0)
+
+    const [mainImage, setMainImage] = React.useState('')
+    const [indirectImage, setIndirectImage] = React.useState('')
+    const [catalystImage, setCatalystImage] = React.useState('')
 
     const [mainBalance, setMainBalance] = React.useState(0)
     const [indirectBalance, setIndirectBalance] = React.useState(0)
@@ -47,12 +58,17 @@ export default function FixedContainer(props) {
     const [characterExp, setCharacterExp] = React.useState(0)
 
     React.useEffect(() => {
-        getRequest()
-        getUserBalances()
-        getUserAllowances()
-        getMintedFreeStatus()
+        if (address) {
+            getRequest()
+            getUserBalances(mainMaterial, indirectMaterial, catalyst)
+            getUserAllowances(mainMaterial, indirectMaterial, catalyst)
+            getMintedFreeStatus()
+        }
+    }, [, address])
+
+    React.useEffect(()=>{
         getCharacterExp()
-    }, [])
+    },[,props.characterSelected])
 
     React.useEffect(() => {
         getRecipe()
@@ -64,7 +80,7 @@ export default function FixedContainer(props) {
     const getRequest = async () => {
         setLoadingText('Loading previous equipment mint request...')
         setIsLoading(true)
-        const request = await c_apis.periphery.routers.eqpt_minter.getRequest(localStorage.getItem('wallet'))
+        const request = await c_apis.periphery.routers.eqpt_minter.getRequest(address)
         if (parseInt(request.request_id) > 0) {
             setRequestExists(true)
             getFulfillment(request.request_id)
@@ -87,13 +103,13 @@ export default function FixedContainer(props) {
 
     const approveTokens = async () => {
         let tokensToApprove = 0
-        if (mainAllowance < mainAmount){tokensToApprove++}
-        if (indirectAllowance < indirectAmount){tokensToApprove++}
-        if (catalystAllowance < catalystAmount){tokensToApprove++}
+        if (mainAllowance < mainAmount) { tokensToApprove++ }
+        if (indirectAllowance < indirectAmount) { tokensToApprove++ }
+        if (catalystAllowance < catalystAmount) { tokensToApprove++ }
         let tokensBeingApproved = 1
         setIsLoading(true)
         try {
-            
+
             if (mainAllowance < mainAmount) {
                 setLoadingText(`(${tokensBeingApproved}/${tokensToApprove}) Approving the minter contract for your $${mainTag} tokens.`)
                 await c_apis.core.tokens.approve(recipe_lib.getMaterialName(mainMaterial), 'equipment_minter', '1000000')
@@ -102,13 +118,13 @@ export default function FixedContainer(props) {
 
             if (indirectAllowance < indirectAmount) {
                 setLoadingText(`(${tokensBeingApproved}/${tokensToApprove}) Approving the minter contract for your $${indirectTag} tokens.`)
-                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(indirectMaterial), 'equipment_minter', '1000000') 
+                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(indirectMaterial), 'equipment_minter', '1000000')
                 tokensBeingApproved++
             }
 
             if (catalystAllowance < catalystAmount) {
                 setLoadingText(`(${tokensBeingApproved}/${tokensToApprove}) Approving the minter contract for your $${catalystTag} tokens.`)
-                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(catalyst), 'equipment_minter', '1000000') 
+                await c_apis.core.tokens.approve(recipe_lib.getMaterialName(catalyst), 'equipment_minter', '1000000')
             }
             getUserAllowances(mainMaterial, indirectMaterial, catalyst)
             setIsLoading(false)
@@ -170,7 +186,7 @@ export default function FixedContainer(props) {
         setLoadingText('(2/2) Waiting for VRF fulfillment...')
         const contract = await c_apis.periphery.chainlink.eqpts_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
-            if (user == localStorage.getItem('wallet')) {
+            if (user == address) {
                 setReadyToMint(true)
                 contract.removeAllListeners("RequestFulfilled");
                 setIsLoading(false)
@@ -182,7 +198,7 @@ export default function FixedContainer(props) {
     const listenToMints = async () => {
         const contract = await c_apis.core.eqpts.getListener()
         contract.on("EquipmentMinted", (id, address, eqpt_props, eqpt_stats) => {
-            if (address == localStorage.getItem('wallet')) {
+            if (address == address) {
                 const equipment = {
                     id: id,
                     idNum: parseInt(id),
@@ -221,8 +237,13 @@ export default function FixedContainer(props) {
         setMainTag(recipe.main_tag)
         setIndirectTag(recipe.indirect_tag)
         setCatalystTag(recipe.catalyst_tag)
-        getUserBalances(recipe.main_material, recipe.indirect_material, recipe.catalyst)
-        getUserAllowances(recipe.main_material, recipe.indirect_material, recipe.catalyst)
+        setMainImage(tokens_lib.getTokenImageByName(recipe.main_name))
+        setIndirectImage(tokens_lib.getTokenImageByName(recipe.indirect_name))
+        setCatalystImage(tokens_lib.getTokenImageByName(recipe.catalyst_name))
+        if (address) {
+            getUserBalances(recipe.main_material, recipe.indirect_material, recipe.catalyst)
+            getUserAllowances(recipe.main_material, recipe.indirect_material, recipe.catalyst)
+        }
     }
 
     const getUserBalances = (main, indirect, catalyst) => {
@@ -235,20 +256,20 @@ export default function FixedContainer(props) {
 
     const getMainBalance = async (material_index) => {
         setIsUpdating(true)
-        const userAddress = localStorage.getItem('wallet')
+        const userAddress = address
         const bal = await c_apis.core.tokens.balanceOf(recipe_lib.getMaterialName(material_index), userAddress)
         setMainBalance(bal)
         setIsUpdating(false)
     }
 
     const getIndirectBalance = async (material_index) => {
-        const userAddress = localStorage.getItem('wallet')
+        const userAddress = address
         const bal = await c_apis.core.tokens.balanceOf(recipe_lib.getMaterialName(material_index), userAddress)
         setIndirectBalance(bal)
     }
 
     const getCatalystBalance = async (catalyst_index) => {
-        const userAddress = localStorage.getItem('wallet')
+        const userAddress = address
         const bal = await c_apis.core.tokens.balanceOf(recipe_lib.getCatalystName(catalyst_index), userAddress)
         setCatalystBalance(bal)
     }
@@ -262,20 +283,20 @@ export default function FixedContainer(props) {
     }
 
     const getMainAllowance = async (material_index) => {
-        const userAddress = localStorage.getItem('wallet')
+        const userAddress = address
         const allowance = await c_apis.core.tokens.allowance(recipe_lib.getMaterialName(material_index), userAddress, 'equipment_minter')
         setMainAllowance(allowance)
 
     }
 
     const getIndirectAllowance = async (material_index) => {
-        const userAddress = localStorage.getItem('wallet')
+        const userAddress = address
         const allowance = await c_apis.core.tokens.allowance(recipe_lib.getMaterialName(material_index), userAddress, 'equipment_minter')
         setIndirectAllowance(allowance)
     }
 
     const getCatalystAllowance = async (catalyst_index) => {
-        const userAddress = localStorage.getItem('wallet')
+        const userAddress = address
         const allowance = await c_apis.core.tokens.allowance(recipe_lib.getCatalystName(catalyst_index), userAddress, 'equipment_minter')
         setCatalystAllowance(allowance)
     }
@@ -293,30 +314,40 @@ export default function FixedContainer(props) {
     }
 
     const getMintedFreeStatus = async () => {
-        if (props.characterSelected != undefined && props.characterSelected != 0) {
+        if (props.characterSelected) {
             const minted = await c_apis.periphery.routers.eqpt_minter.characterMintedFree(props.characterSelected, eqptIndex)
             setDidMintFree(minted)
         }
     }
 
     const getCharacterExp = async () => {
-        if (props.characterSelected != undefined && props.characterSelected != 0) {
-            const character = await s_apis.core.ctrs.getCharacter(props.characterSelected)
-            const exp = character.exp
-            setCharacterExp(exp)
+        const character = await s_apis.core.ctrs.getCharacter(parseInt(props.characterSelected))
+        let exp
+        if (character) {
+            exp = character.exp
         }
+        setCharacterExp(exp)
     }
 
+    const freeMintStatus = (
+        !address ? <Typography variant='body2'>*Please connect your wallet.</Typography> :
+        characterExp > 200 ? didMintFree ?
+            <Typography variant='body2'>*Free mint has already been claimed.</Typography> :
+            <Typography variant='body2'>*Free mint is available!</Typography> :
+            <Typography variant='body2'>{`*Character needs ${201 - characterExp} more exp point${201 - characterExp > 1 ? 's': ''} to get a free ${eqpt_mint_lib.equipmentName(eqptIndex)} mint.`}</Typography>
+    )
+
     const mintButton = (
-        readyToMint ?
-            <Button onClick={mint} variant="outlined">Mint</Button> :
-            (!didMintFree && characterExp > 200) ?
-                <Button onClick={sendRequestFree} variant="outlined" disabled={requestExists}>Craft Free</Button> :
-                getEnoughBalance() ?
-                    getEnoughAllowance() ?
-                        <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Craft</Button> :
-                        <Button onClick={approveTokens} variant="outlined">Approve Tokens</Button> :
-                    <Button variant="outlined" disabled={true}>Not enough balance</Button>
+        !address ? <ConnectButton /> :
+            readyToMint ?
+                <Button onClick={mint} variant="outlined">Mint</Button> :
+                (!didMintFree && characterExp > 200) ?
+                    <Button onClick={sendRequestFree} variant="outlined" disabled={requestExists}>FREE CRAFT</Button> :
+                    getEnoughBalance() ?
+                        getEnoughAllowance() ?
+                            <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Craft</Button> :
+                            <Button onClick={approveTokens} variant="outlined">Approve Tokens</Button> :
+                        <Button variant="outlined" disabled={true}>Not enough balance</Button>
 
     )
 
@@ -340,8 +371,8 @@ export default function FixedContainer(props) {
                                 <Image
                                     src={eqpt_mint_lib.equipmentImages(eqptIndex)}
                                     alt={eqpt_mint_lib.equipmentNames(eqptIndex)}
-                                    width={140}
-                                    height={140}
+                                    width={90}
+                                    height={90}
                                 />
                             </Grid>
                             <Grid item container xs={2} justify="center" align="center">
@@ -371,15 +402,15 @@ export default function FixedContainer(props) {
                                     <Typography variant='body'>Required Materials:</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Avatar />
+                                    <Avatar src={mainImage} variant='square'/>
                                     <Typography variant='body'>{`${mainAmount} ${mainTag}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Avatar />
+                                    <Avatar src={indirectImage} variant='square' />
                                     <Typography variant='body'>{`${indirectAmount} ${indirectTag}`}</Typography>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <Avatar />
+                                    <Avatar src={catalystImage} variant='square' />
                                     <Typography variant='body'>{`${catalystAmount} ${catalystTag}`}</Typography>
                                 </Grid>
                             </Grid>
@@ -411,9 +442,11 @@ export default function FixedContainer(props) {
                                     <Typography variant='body' color={catalystBalance < catalystAmount ? 'red' : 'primary.main'}>{isUpdating ? `---` : `${catalystBalance}`}</Typography>
                                 </Grid>
                             </Grid>
-
                             <Grid item xs={12} sx={{ mt: 2 }}>
                                 {mintButton}
+                            </Grid>
+                            <Grid item xs={12} sx={{ mt: 2 }}>
+                                {freeMintStatus}
                             </Grid>
                         </Grid>
                     </Box>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Router from 'next/router'
 import Image from 'next/image'
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box, Grid, Typography, LinearProgress, Divider, Button } from '@mui/material';
@@ -36,15 +37,21 @@ export default function FixedContainer(props) {
     const [accessory, setAccessory] = React.useState(0)
 
     React.useEffect(() => {
-        setCharImage(localStorage.getItem('characterIcon'))
-        getCharacter(props.characterSelected)
-        getCharacterEquipments(props.characterSelected)
-        getCharacterEnergy(props.characterSelected)
-    }, [props.characterSelected])
+        if(props.characterSelected){
+            getCharacter(props.characterSelected)
+            getCharacterEquipments(props.characterSelected)
+            getCharacterEnergy(props.characterSelected)
+        }
+        if(props.characterSelected == undefined){
+            setIsLoading(false)
+        }
+    }, [, props.characterSelected])
 
     React.useEffect(()=>{
-        updateCharacterEquipments(props.characterSelected)
-    },[props.equipmentsUpdated])
+        if(props.characterSelected){
+            updateCharacterEquipments(props.characterSelected)
+        }
+    },[,props.equipmentsUpdated])
 
     const getCharacter = async (character_id) => {
         setIsLoading(true)
@@ -99,6 +106,11 @@ export default function FixedContainer(props) {
         setCharEnergy(parseInt(await apis.core.dungeons.getCharacterEnergy(character_id)))
     }
 
+    const dungeonButton = (
+        props.characterSelected ? <Button variant='outlined'>Enter Dungeons</Button> :
+        <Button variant='outlined' onClick={()=> Router.push('/characters')}>Select Character</Button>
+    )
+
     return (
         <React.Fragment>
             <CssBaseline />
@@ -106,8 +118,8 @@ export default function FixedContainer(props) {
                 <Container fixed justify="center" align="center" maxWidth='xs'>
                     <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
                         <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
-                        <Typography variant='h6'>YOUR CHARACTER</Typography>
-                        <Grid container align='center' justify='center'>
+                        <Typography variant='h6'>{props.characterSelected ? `YOUR CHARACTER`: `NO CHARACTER SELECTED`}</Typography>
+                        <Grid container align='center' justify='center' display={props.characterSelected ? 'block':'none'}>
                             <Grid item xs={12}>
                                 <Image
                                     src={charImage}
@@ -263,11 +275,12 @@ export default function FixedContainer(props) {
                                 <LinearProgress variant="determinate" value={charEnergy / 10} sx={{ height: '20px', ml: 5, mr: 5 }} />
                             </Grid>
 
-                            <Grid item xs={12} sx={{ mt: 2 }}>
-                                <Button variant='outlined'>Enter Dungeons</Button>
-                            </Grid>
+                            
 
                         </Grid>
+                        <Grid item xs={12} sx={{ mt: 2 }}>
+                                {dungeonButton}
+                            </Grid>
                     </Box>
                 </Container>
             </Box>

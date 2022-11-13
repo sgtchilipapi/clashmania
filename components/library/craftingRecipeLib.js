@@ -1,9 +1,9 @@
 const tokens = require('../../random-clash-contracts/app-config/deployments')
 
 export function getRecipe(item_type){
-    const [main_m, main_a, main_tag] = getMainMaterial(item_type);
-    const [indirect_m, indirect_a, indirect_tag] = getIndirectMaterial(item_type);
-    const [catalyst_m, catalyst_a, catalyst_tag] = getCatalyst(item_type);
+    const [main_m, main_a, main_tag, main_name] = getMainMaterial(item_type);
+    const [indirect_m, indirect_a, indirect_tag, indirect_name] = getIndirectMaterial(item_type);
+    const [catalyst_m, catalyst_a, catalyst_tag, catalyst_name] = getCatalyst(item_type);
 
     const recipe = {
         main_material: main_m,
@@ -14,7 +14,10 @@ export function getRecipe(item_type){
         catalyst_amount: catalyst_a,
         main_tag: main_tag,
         indirect_tag: indirect_tag,
-        catalyst_tag: catalyst_tag
+        catalyst_tag: catalyst_tag,
+        main_name: main_name,
+        indirect_name: indirect_name,
+        catalyst_name: catalyst_name
     };
 
     return recipe

@@ -12,7 +12,7 @@ import BoltIcon from '@mui/icons-material/Bolt';
 import Router from 'next/router'
 
 function ResponsiveAppBar(props) {
-  const handleClick = () => Router.push('/characterDetails')
+  const handleClick = () => Router.push(props.characterSelected ? '/characterDetails': '/characters')
   return (
     <AppBar position="static" sx={{ backgroundColor: 'info.dark' }}>
       <Container maxWidth="xl">
