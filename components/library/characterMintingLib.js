@@ -19,7 +19,7 @@ export function characterNames(index) {
 export function characterDesc(index) {
     if(index == 0)return `"These skull cups are awful! My coffee keeps spilling from the eye holes!"`
     if(index == 1)return `"Well, back to it! These trees aint gonna chop themselves hu ha!"`
-    if(index == 2)return `"I dont live in a swamp! Im not an ogre dammit!"`
+    if(index == 2)return `"Whats greener, bigger and stronger than an orc? Me! And Im not even trollin ya."`
     if(index == 3)return `"Not every mechanic can fix your car. Yes I can fix your car but not because Im a mechanic!"`
     if(index == 4)return `"No, I am not a ninja turtle."`
     if(index == 5)return `"They wont even know what hit them coffins."`

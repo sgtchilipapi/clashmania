@@ -18,6 +18,7 @@ export default function FixedContainer(props) {
     const [charClass, setCharClass] = React.useState('')
     const [charImage, setCharImage] = React.useState('/images/characters/0 Viking/Angry.png')
     const [charEnergy, setCharEnergy] = React.useState(0)
+    const [charExp, setCharExp] = React.useState(0)
     const [charLevel, setCharLevel] = React.useState(1)
     const [charStr, setCharStr] = React.useState(0)
     const [charVit, setCharVit] = React.useState(0)
@@ -68,6 +69,7 @@ export default function FixedContainer(props) {
         setCharImage(char_details_lib.getCharacterImage(p.character_class, p.mood))
         setCharClass(char_details_lib.characterClasses(p.character_class))
         setCharName(character.char_name)
+        setCharExp(p.exp)
         setCharLevel((p.exp / 100) + 1)
         setCharStr(parseInt(p.str))
         setCharVit(parseInt(p.vit))
@@ -131,8 +133,11 @@ export default function FixedContainer(props) {
                             <Grid item xs={12}>
                                 <Typography variant='h6'>{charName}</Typography>
                             </Grid>
-                            <Grid item xs={12} sx={{ mb: 2 }}>
+                            <Grid item xs={12}>
                                 <Typography variant='body'>{`Lvl ${charLevel} ${charClass}`}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sx={{ mb: 2 }}>
+                                <Typography variant='body'>{`Experience: ${charExp}`}</Typography>
                             </Grid>
 
                             <Grid item container xs={12}>

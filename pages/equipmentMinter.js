@@ -334,7 +334,7 @@ export default function FixedContainer(props) {
         characterExp > 200 ? didMintFree ?
             <Typography variant='body2'>*Free mint has already been claimed.</Typography> :
             <Typography variant='body2'>*Free mint is available!</Typography> :
-            <Typography variant='body2'>{`*Character needs ${201 - characterExp} more exp point${201 - characterExp > 1 ? 's': ''} to get a free ${eqpt_mint_lib.equipmentName(eqptIndex)} mint.`}</Typography>
+            <Typography variant='body2'>{props.characterSelected ? `*Character needs ${201 - characterExp} more exp point${201 - characterExp > 1 ? 's': ''} to get a free ${eqpt_mint_lib.equipmentName(eqptIndex)} mint.`: `No character selected.`}</Typography>
     )
 
     const mintButton = (
