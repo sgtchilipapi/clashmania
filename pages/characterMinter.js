@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Router from 'next/router'
+import { useAccount } from 'wagmi'
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -11,8 +13,10 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import LoadingBackdrop from '../components/backdrop';
 import * as char_mint_lib from "../components/library/characterMintingLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
+import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
+    const { address } = useAccount()
     const [charIndex, setCharIndex] = React.useState(0)
     const [charName, setCharName] = React.useState('')
     const [requestExists, setRequestExists] = React.useState(false)
@@ -21,8 +25,10 @@ export default function FixedContainer(props) {
     const [loadingText, setLoadingText] = React.useState('Loading...')
 
     React.useEffect(() => {
-        getRequest()
-    }, [])
+        if (address) {
+            getRequest()
+        }
+    }, [, address])
 
     const prevChar = () => setCharIndex(charIndex > 0 ? charIndex => charIndex - 1 : 0)
     const nextChar = () => setCharIndex(charIndex < 5 ? charIndex => charIndex + 1 : 5)
@@ -31,7 +37,7 @@ export default function FixedContainer(props) {
     const getRequest = async () => {
         setLoadingText('Loading previous character mint request...')
         setIsLoading(true)
-        const request = await c_apis.periphery.routers.ctr_minter.getRequest(localStorage.getItem('wallet'))
+        const request = await c_apis.periphery.routers.ctr_minter.getRequest(address)
         if (parseInt(request.request_id) > 0) {
             setRequestExists(true)
             setCharName(request._name)
@@ -73,12 +79,14 @@ export default function FixedContainer(props) {
             setIsLoading(true)
             const mint_receipt = await c_apis.periphery.routers.ctr_minter.mintCharacter()
             props.setCharacterSelected(parseInt(mint_receipt.logs[0].topics[3]))
+            props.setCharacterIcon(char_mint_lib.characterImages(charIndex))
+            localStorage.setItem(`characterIcon-${address}`, char_mint_lib.characterImages(charIndex))
+            localStorage.setItem(`characterSelected-${address}`, mint_receipt.logs[0].topics[3])
             setRequestExists(false)
             setReadyToMint(false)
             setCharIndex(0)
             setCharName('')
             setIsLoading(false)
-            props.setCharacterIcon(localStorage.setItem('characterIcon', char_mint_lib.characterImages(charIndex)))
             Router.push('/characterDetails')
         }
         catch {
@@ -92,7 +100,7 @@ export default function FixedContainer(props) {
         const contract = await c_apis.periphery.chainlink.ctrs_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
             console.log(contract.listeners("RequestFulfilled"))
-            if (user == localStorage.getItem('wallet')) {
+            if (user == address) {
                 setReadyToMint(true)
                 console.log('Request has been fulfilled by the VRF! The character NFT is ready to be minted!')
                 contract.removeAllListeners("RequestFulfilled");
@@ -106,13 +114,19 @@ export default function FixedContainer(props) {
     const listenToMints = async () => {
         const contract = await c_apis.core.ctrs.getListener()
         contract.on("CharacterMinted", (a, address, c, d) => {
-            if (address == localStorage.getItem('wallet')) {
+            if (address == address) {
                 setRequestExists(false)
                 contract.off("CharacterMinted")
             }
         })
         console.log('listening to mints...')
     }
+
+    const mintButton = (
+        !address ? <ConnectButton /> :
+        readyToMint ? <Button onClick={mint} variant="outlined">Mint</Button> :
+        <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Create</Button>
+    )
 
     return (
         <React.Fragment>
@@ -150,30 +164,25 @@ export default function FixedContainer(props) {
                                 <Typography variant="body" sx={{ display: readyToMint ? 'none' : 'inline', ml: 1, mr: 1 }}>{char_mint_lib.characterBonus(charIndex)}</Typography>
                             </Grid>
                             <Grid item container xs={12} sx={{ mt: 1 }} align='center' justify='center'>
-                                <Grid item xs={12}>
-                                    <Typography variant="body" sx={{ display: readyToMint ? 'inline' : 'none', ml: 1, mr: 1 }}>
+                                <Grid item xs={12} sx={{ display: readyToMint ? 'inline' : 'none'}}>
+                                    <Typography variant="body" sx={{ ml: 1, mr: 1}}>
                                         {`Congratulations! ${charName} is ready to be minted! Please click mint below.`}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sx={{mt:1}}>
                                     <TextField
-                                        disabled={requestExists}
-                                        required
-                                        id="outlined-required"
+                                        disabled={address ? requestExists ? true : false : true}
+                                        id="outlined"
                                         label="Enter name"
                                         value={charName}
                                         onChange={handleChange}
-                                        sx={{ visibility: readyToMint ? 'hidden' : 'visible' }}
                                     />
                                 </Grid>
 
                             </Grid>
 
                             <Grid item xs={12} sx={{ mt: 1 }}>
-                                {
-                                    readyToMint ? <Button onClick={mint} variant="outlined">Mint</Button> :
-                                        <Button onClick={sendRequest} variant="outlined" disabled={requestExists}>Create</Button>
-                                }
+                                {mintButton}
                             </Grid>
                         </Grid>
                     </Box>

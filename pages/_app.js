@@ -16,6 +16,7 @@ import {
   chain,
   defaultChains,
   useConnect,
+  useAccount
 } from 'wagmi'
 
 import { publicProvider } from 'wagmi/providers/public'
@@ -48,13 +49,26 @@ const client = createClient({
 const clientSideEmotionCache = createEmotionCache();
 
 const MyApp = (props) => {
+  const {address} = useAccount()
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const [connectedWallet, setConnectedWallet] = React.useState('')
-  const [characterSelected, setCharacterSelected] = React.useState(0)
-  const [equipmentSelected, setEquipmentSelected] = React.useState(0)
-  const [characterIcon, setCharacterIcon] = React.useState('')
+  const [characterSelected, setCharacterSelected] = React.useState(undefined)
+  const [equipmentSelected, setEquipmentSelected] = React.useState(undefined)
+  const [characterIcon, setCharacterIcon] = React.useState(undefined)
   const [equipmentOpenDialog, setEquipmentOpenDialog] = React.useState(false)
   const [equipmentsUpdated, setEquipmentsUpdated] = React.useState(0)
+
+  React.useEffect(()=>{
+    if(localStorage.getItem(`characterSelected-${address}`)){
+      setCharacterSelected(localStorage.getItem(`characterSelected-${address}`))
+    }
+    if(localStorage.getItem(`characterIcon-${address}`)){
+      setCharacterIcon(localStorage.getItem(`characterIcon-${address}`))
+    }
+    if(!address){
+      setCharacterSelected(undefined)
+      setCharacterIcon(undefined)
+    }
+  },[,address])
 
   return (
     <WagmiConfig client={client}>
@@ -76,7 +90,6 @@ const MyApp = (props) => {
             setEquipmentsUpdated={setEquipmentsUpdated}
           />
           <BottomBar
-            setConnectedWallet={setConnectedWallet}
           />
           <EquipmentDialog
               equipmentSelected={equipmentSelected}

@@ -1,13 +1,17 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { useAccount } from 'wagmi'
+
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box, Grid, Button, Typography } from '@mui/material';
 import EquipmentList from '../components/equipments/equipmentList';
 import LoadingBackdrop from '../components/backdrop';
 
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
+import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
+  const { address } = useAccount()
   const [isLoading, setIsLoading] = React.useState(false)
   const [loadingText, setLoadingText] = React.useState('loading data...')
 
@@ -15,15 +19,20 @@ export default function FixedContainer(props) {
   
   React.useEffect(() => {
     getEquipmentsViaSubgraph()
-  }, [])
+  }, [,address])
 
   const getEquipmentsViaSubgraph = async () => {
     setIsLoading(true)
     setLoadingText('Loading all of your equipments...')
-    const data = await s_apis.core.eqpts.getEquipmentsOwned(localStorage.getItem('wallet'))
+    const data = await s_apis.core.eqpts.getEquipmentsOwned(address)
     setEquipments(data)
     setIsLoading(false)
   }
+
+  const craftButton = (
+    address ? <Link href="/equipmentMinter"><Button variant='outlined' sx={{ mt: 2 }}>Craft an Item</Button></Link> :
+    <ConnectButton />
+  )
 
   return (
     <React.Fragment>
@@ -42,7 +51,7 @@ export default function FixedContainer(props) {
                 />
               </Grid>
             </Grid>
-            <Link href="/equipmentMinter"><Button variant='outlined' sx={{ mt: 2 }}>Craft an Item</Button></Link>
+            {craftButton}
           </Box>
         </Container>
       </Box>

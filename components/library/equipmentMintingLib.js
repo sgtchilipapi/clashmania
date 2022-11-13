@@ -19,3 +19,10 @@ export function equipmetDescription(index) {
     if(index == 2)return `A headgear provides minor defense +DEF`
     if(index == 3)return "An accessory provides evasion +EVA"
 }
+
+export function equipmentName(index) {
+    if(index == 0)return `weapon`
+    if(index == 1)return `armor`
+    if(index == 2)return `headgear`
+    if(index == 3)return "accessory"
+}

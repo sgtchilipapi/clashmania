@@ -14,6 +14,7 @@ export default function BottomBar() {
 
   const toCharacters = () => Router.push('/characters')
   const toEquipments = () => Router.push('/equipments')
+  const toWallet = () => Router.push('/wallet')
 
   return (
     <Box sx={{ width: 'auto', position: 'fixed', bottom: 0, left: 0, right: 0}}>
@@ -29,7 +30,7 @@ export default function BottomBar() {
         <BottomNavigationAction onClick={toEquipments} label="INVTY" icon={<BusinessCenterIcon />} />
         <BottomNavigationAction label="DUNGEONS" icon={<BalconyIcon />} />
         <BottomNavigationAction label="ARENA" icon={<StadiumIcon />} />
-        <BottomNavigationAction label="WLET" icon={<WalletIcon />} />
+        <BottomNavigationAction onClick={toWallet} label="WLET" icon={<WalletIcon />} />
       </BottomNavigation>
     </Box>
   );

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Link from 'next/link';
+import {useAccount} from 'wagmi'
+
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box, Grid, Button, Typography } from '@mui/material';
 import CharactersList from '../components/characters/characterList';
@@ -8,9 +10,11 @@ import LoadingBackdrop from '../components/backdrop';
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
 import { getCharacterImage } from '../components/library/characterDetailsLib';
+import ConnectButton from '../components/wallet/connectButton';
 
 
 export default function FixedContainer(props) {
+  const {address} = useAccount()
   const [isLoading, setIsLoading] = React.useState(false)
   const [loadingText, setLoadingText] = React.useState('loading data...')
 
@@ -19,15 +23,20 @@ export default function FixedContainer(props) {
 
   React.useEffect(() => {
     getCharactersViaSubgraph()
-  }, [])
+  }, [,address])
 
   const getCharactersViaSubgraph = async () => {
     setIsLoading(true)
     setLoadingText('Loading all of your characters...')
-    const data = await s_apis.core.ctrs.getCharactersOwned(localStorage.getItem('wallet'))
+    const data = await s_apis.core.ctrs.getCharactersOwned(address)
     setCharacters(data)
     setIsLoading(false)
   }
+
+  const createButton = (
+    address ? <Link href="/characterMinter"><Button variant='outlined' sx={{ mt: 2 }}>Create New Character</Button></Link> :
+    <ConnectButton />
+  )
 
   return (
     <React.Fragment>
@@ -42,7 +51,7 @@ export default function FixedContainer(props) {
                 <CharactersList characters={characters} setCharacterSelected={props.setCharacterSelected} setCharacterIcon={props.setCharacterIcon} />
               </Grid>
             </Grid>
-            <Link href="/characterMinter"><Button variant='outlined' sx={{ mt: 2 }}>Create New Character</Button></Link>
+            {createButton}
           </Box>
         </Container>
       </Box>
