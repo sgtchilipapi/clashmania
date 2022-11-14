@@ -2,6 +2,8 @@ import * as React from 'react';
 import Router from 'next/router'
 import Image from 'next/image'
 import CssBaseline from '@mui/material/CssBaseline';
+
+import {useAccount} from 'wagmi'
 import { Container, Box, Grid, Typography, LinearProgress, Divider, Button } from '@mui/material';
 
 import EquipmentItem from '../components/equipments/equipmentItem';
@@ -9,8 +11,10 @@ import LoadingBackdrop from '../components/backdrop'
 
 import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
 import * as char_details_lib from '../components/library/characterDetailsLib';
+import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
+    const {address} = useAccount()
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('loading data...')
 
@@ -109,8 +113,9 @@ export default function FixedContainer(props) {
     }
 
     const dungeonButton = (
-        props.characterSelected ? <Button variant='outlined'>Enter Dungeons</Button> :
-        <Button variant='outlined' onClick={()=> Router.push('/characters')}>Select Character</Button>
+        address ? props.characterSelected ? <Button onClick={()=> Router.push('/dungeons')}variant='outlined'>Enter Dungeons</Button> :
+        <Button variant='outlined' onClick={()=> Router.push('/characters')}>Select Character</Button>:
+        <ConnectButton />
     )
 
     return (

@@ -49,13 +49,18 @@ const client = createClient({
 const clientSideEmotionCache = createEmotionCache();
 
 const MyApp = (props) => {
-  const {address} = useAccount()
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const {address} = useAccount()
+  
   const [characterSelected, setCharacterSelected] = React.useState(undefined)
-  const [equipmentSelected, setEquipmentSelected] = React.useState(undefined)
   const [characterIcon, setCharacterIcon] = React.useState(undefined)
+
+  const [equipmentSelected, setEquipmentSelected] = React.useState(undefined)
   const [equipmentOpenDialog, setEquipmentOpenDialog] = React.useState(false)
   const [equipmentsUpdated, setEquipmentsUpdated] = React.useState(0)
+
+  const [dungeonSelected, setDungeonSelected] = React.useState(0)
+
 
   React.useEffect(()=>{
     if(localStorage.getItem(`characterSelected-${address}`)){
@@ -89,6 +94,8 @@ const MyApp = (props) => {
             setEquipmentOpenDialog={setEquipmentOpenDialog}
             equipmentsUpdated={equipmentsUpdated}
             setEquipmentsUpdated={setEquipmentsUpdated}
+            dungeonSelected={dungeonSelected}
+            setDungeonSelected={setDungeonSelected}
           />
           <BottomBar
           />

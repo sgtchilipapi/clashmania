@@ -42,7 +42,7 @@ export default function FixedContainer(props) {
         <Container fixed justify="center" align="center" maxWidth='xs'>
           <Box sx={{ bgcolor: '#cfe8fc', height: `${equipments.length < 10 ? 100: (equipments.length * 10)}vh`, color: 'primary.main' }}>
             <Typography variant='h6' sx={{ mb: 1 }}>YOUR EQUIPMENTS</Typography>
-            <Grid container align='center' justify='center'>
+            <Grid container align='center' justify='center'  sx={{mb:2}}>
               <Grid item container xs={12}>
                 <EquipmentList
                   equipments={equipments}
