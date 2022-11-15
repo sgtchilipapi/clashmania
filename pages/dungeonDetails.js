@@ -36,17 +36,22 @@ export default function FixedContainer(props) {
     const nextTier = () => setTierIndex(tierIndex < 4 ? tierIndex => tierIndex + 1 : 4)
 
     const getRequest = async () => {
-        setLoadingText('Loading previous find battle request...')
+        setLoadingText('Loading previous battle request...')
         setIsLoading(true)
         const request = await c_apis.core.dungeons.getBattleRequest(address)
         if (parseInt(request.request_id) > 0) {
             if (!request.completed) {
-                setRequestExists(true)
+                console.log(request.completed)
+                setReadyToBattle(true)
+                setRequestExists(false)
                 props.setDungeonSelected(parseInt(request.dungeon_type))
                 setTierIndex(parseInt(request.tier))
                 getFulfillment(request.request_id)
+            }else{
+                setReadyToBattle(false)
+                setRequestExists(false)
             }
-            setReadyToBattle(true)
+            setIsLoading(false)
         } else {
             setIsLoading(false)
         }
@@ -97,7 +102,7 @@ export default function FixedContainer(props) {
             setLoadingText('(1/1) Waiting for `clash` transaction confirmation...')
             setIsLoading(true)
             const battle_receipt = await c_apis.core.dungeons.startBattle()
-            console.log(battle_receipt)
+            // console.log(battle_receipt)
             setRequestExists(false)
             setReadyToBattle(false)
             setIsLoading(false)
