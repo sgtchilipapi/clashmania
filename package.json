@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.13",
     "@openzeppelin/contracts": "^4.7.3",
+    "canvas": "^2.10.2",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.3",
     "ethers": "^5.7.2",

@@ -66,3 +66,10 @@ export function getCatalystName(catalyst_index){
     if(catalyst_index == 2) return 'redspark'
     if(catalyst_index == 3) return 'bluespark'
 }
+
+export function getMaterialTicker(material_index){
+    if(material_index == 0) return 'BOOM'
+    if(material_index == 1) return 'THUMP'
+    if(material_index == 2) return 'CLINK'
+    if(material_index == 3) return 'SNAP'
+}
