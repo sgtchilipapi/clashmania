@@ -7,16 +7,16 @@ import { Container, Box, Grid, Button, Typography } from '@mui/material';
 import EquipmentList from '../components/equipments/equipmentList';
 import LoadingBackdrop from '../components/backdrop';
 import ConnectButton from '../components/wallet/connectButton';
+import DungeonList from '../components/dungeons/dungeonsList';
 
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
 import * as dungeons_lib from "../components/library/dungeonsLib"
-import DungeonList from '../components/dungeons/dungeonsList';
-
 
 export default function FixedContainer(props) {
     const { address } = useAccount()
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('loading data...')
+
     const dungeons = [0, 1, 2]
 
     React.useEffect(() => {

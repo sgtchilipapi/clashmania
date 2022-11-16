@@ -99,12 +99,12 @@ export default function FixedContainer(props) {
         setLoadingText('(2/2) Waiting for VRF fulfillment...')
         const contract = await c_apis.periphery.chainlink.ctrs_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
-            console.log(contract.listeners("RequestFulfilled"))
+            // console.log(contract.listeners("RequestFulfilled"))
             if (user == address) {
                 setReadyToMint(true)
                 console.log('Request has been fulfilled by the VRF! The character NFT is ready to be minted!')
                 contract.removeAllListeners("RequestFulfilled");
-                console.log(contract.listeners("RequestFulfilled"))
+                // console.log(contract.listeners("RequestFulfilled"))
                 setIsLoading(false)
             }
         })

@@ -10,8 +10,9 @@ import { Button, Typography, TextField } from '@mui/material';
 import Image from 'next/image'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import LoadingBackdrop from '../components/backdrop';
 
+import LoadingBackdrop from '../components/backdrop';
+import BattleReplayDialog from '../components/dungeons/battleReplay';
 import ConnectButton from '../components/wallet/connectButton';
 
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
@@ -25,6 +26,9 @@ export default function FixedContainer(props) {
     const [readyToBattle, setReadyToBattle] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('Loading...')
+    const [openReplay, setOpenReplay] = React.useState(false)
+    const [battleId, setBattleId] = React.useState('')
+    const [battleEvents, setBattleEvents] = React.useState({})
 
     React.useEffect(() => {
         if (address) {
@@ -101,11 +105,14 @@ export default function FixedContainer(props) {
         // try {
             setLoadingText('(1/1) Waiting for `clash` transaction confirmation...')
             setIsLoading(true)
-            const battle_receipt = await c_apis.core.dungeons.startBattle()
-            // console.log(battle_receipt)
+            const battle_events = await c_apis.core.dungeons.startBattle()
+            setBattleEvents(battle_events)
+            setBattleId(battle_events.battle_info.id._hex)
             setRequestExists(false)
             setReadyToBattle(false)
             setIsLoading(false)
+            setOpenReplay(true)
+
             //Show the replay window here
         // }
         // catch {
@@ -130,6 +137,12 @@ export default function FixedContainer(props) {
         <React.Fragment>
             <CssBaseline />
             <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
+            <BattleReplayDialog 
+                openReplay={openReplay} 
+                setOpenReplay={setOpenReplay} 
+                battleEvents={battleEvents}
+                battleId={battleId}    
+            />
             <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
                     <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.dark' }} justify="center" align="center">

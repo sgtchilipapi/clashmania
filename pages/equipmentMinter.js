@@ -331,7 +331,7 @@ export default function FixedContainer(props) {
 
     const freeMintStatus = (
         !address ? <Typography variant='body2'>*Please connect your wallet.</Typography> :
-        characterExp > 200 ? didMintFree ?
+        characterExp > 99 ? didMintFree ?
             <Typography variant='body2'>*Free mint has already been claimed.</Typography> :
             <Typography variant='body2'>*Free mint is available!</Typography> :
             <Typography variant='body2'>{props.characterSelected ? `*Character needs ${201 - characterExp} more exp point${201 - characterExp > 1 ? 's': ''} to get a free ${eqpt_mint_lib.equipmentName(eqptIndex)} mint.`: `No character selected.`}</Typography>
@@ -341,7 +341,7 @@ export default function FixedContainer(props) {
         !address ? <ConnectButton /> :
             readyToMint ?
                 <Button onClick={mint} variant="outlined">Mint</Button> :
-                (!didMintFree && characterExp > 200) ?
+                (!didMintFree && characterExp > 99) ?
                     <Button onClick={sendRequestFree} variant="outlined" disabled={requestExists}>FREE CRAFT</Button> :
                     getEnoughBalance() ?
                         getEnoughAllowance() ?

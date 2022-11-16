@@ -4,21 +4,21 @@ export const dungeons = [
         dungeon_name: 'The Strength',
         dungeon_loot: 'BOOM',
         stat_given: 'DEX',
-        dungeon_image: ''
+        dungeon_image: '/images/enemies/str/4.png'
     },
     {
         dungeon_index: 1,
         dungeon_name: 'The Vitality',
         dungeon_loot: 'THUMP',
         stat_given: 'STR',
-        dungeon_image: ''
+        dungeon_image: '/images/enemies/vit/4.png'
     },
     {
         dungeon_index: 2,
         dungeon_name: 'The Dexterity',
         dungeon_loot: 'CLINK',
         stat_given: 'VIT',
-        dungeon_image: ''
+        dungeon_image: '/images/enemies/dex/4.png'
     }
 ]
 

@@ -27,7 +27,7 @@ export default function DungeonItem(props) {
                 <ListItemAvatar>
                     <Avatar
                         alt={`${dungeon.dungeon_name} Dungeon`}
-                        // src={char_img}
+                        src={dungeon.dungeon_image}
                     />
                 </ListItemAvatar>
                 <ListItemText id={dungeon.dungeon_index} primary={`${dungeon.dungeon_name} Dungeon`} />
