@@ -154,12 +154,12 @@ export default function FixedContainer(props) {
                             <Grid item container xs={2} justify="center" align="center">
                                 <Button onClick={prevTier} disabled={readyToBattle ? true : false}>{<ArrowBackIosIcon />}</Button>
                             </Grid>
-                            <Grid item xs={8} align="center">
+                            <Grid item container xs={8} justifyContent="center" alignItems="center" width={140} height={140}>
                                 <Image
                                     src={dungeons_lib.getMonsterImage(props.dungeonSelected, tierIndex)}
                                     alt={dungeons_lib.getMonsterImage(props.dungeonSelected, tierIndex)}
-                                    width={140}
-                                    height={140}
+                                    width={tierIndex == 4 ? 140: 48}
+                                    height={tierIndex == 4 ? 140: 48}
                                 />
                             </Grid>
                             <Grid item container xs={2} justify="center" align="center">

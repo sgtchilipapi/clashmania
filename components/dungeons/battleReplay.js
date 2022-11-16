@@ -44,6 +44,7 @@ export default function BattleReplayDialog(props) {
     const [charWidth, setCharWidth] = React.useState('')
     const [enemWidth, setEnemWidth] = React.useState('')
     const [charFacing, setCharFacing] = React.useState('')
+    const [enemFacing, setEnemFacing] = React.useState('')
 
     const [result, setResult] = React.useState(0)
     const [expGained, setExpGained] = React.useState(0)
@@ -72,7 +73,7 @@ export default function BattleReplayDialog(props) {
             setEnemHp(be.clashes[i].balances.enem_hp)
             setEnemDef(be.clashes[i].balances.enem_def)
             setResult(be.battle_info.result)
-            setPlaybackTrigger(i)
+            setPlaybackTrigger(playbackTrigger => playbackTrigger + i)
             setShowResult(true)
         }
     }
@@ -97,7 +98,9 @@ export default function BattleReplayDialog(props) {
                 setCharDef(be.clashes[i].balances.char_def)
                 setEnemHp(be.clashes[i].balances.enem_hp)
                 setEnemDef(be.clashes[i].balances.enem_def)
+                
 
+                ///set character sprite reaction
                 if (be.clashes[i].enem.evaded) {
                     setCharReactionSprite(sprites_lib.getCharSpriteSource(be.char.character_class, 'idle'))
                     setCharReactionFrames(sprites_lib.getCharSpriteFrames(be.char.character_class).idle)
@@ -111,15 +114,33 @@ export default function BattleReplayDialog(props) {
                     setCharReactionFrames(sprites_lib.getCharSpriteFrames(be.char.character_class).death)
                 }
 
+                ///set enemy sprite reaction
+                if (be.clashes[i].char.evaded) {
+                    setEnemReactionSprite(sprites_lib.getEnemSpriteSource(be.battle_info.dungeon_type, be.battle_info.tier, 'idle'))
+                    setEnemReactionFrames(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).idle)
+                }
+                if (!be.clashes[i].char.evaded) {
+                    setEnemReactionSprite(sprites_lib.getEnemSpriteSource(be.battle_info.dungeon_type, be.battle_info.tier, 'idle'))
+                    setEnemReactionFrames(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).hurt)
+                }
+                if (be.clashes[i].balances.enem_hp == 0) {
+                    setEnemReactionSprite(sprites_lib.getEnemSpriteSource(be.battle_info.dungeon_type, be.battle_info.tier, 'death'))
+                    setEnemReactionFrames(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).death)
+                }
+
                 console.log(`Im running ${i} times!`)
                 if (i < be.clashes.length) {
-                    setPlaybackTrigger(i + 1)
+                    setPlaybackTrigger(playbackTrigger => playbackTrigger + i)
                     i++
                 }
                 if (i == be.clashes.length) {
                     if (be.clashes[i - 1].balances.char_hp > 0) {
                         setCharReactionSprite(sprites_lib.getCharSpriteSource(be.char.character_class, 'idle'))
                         setCharReactionFrames(sprites_lib.getCharSpriteFrames(be.char.character_class).idle)
+                    }
+                    if (be.clashes[i - 1].balances.enem_hp > 0) {
+                        setEnemReactionSprite(sprites_lib.getEnemSpriteSource(be.battle_info.dungeon_type, be.battle_info.tier, 'idle'))
+                        setEnemReactionFrames(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).idle)
                     }
                     setIsPlaying(false)
                     setResult(be.battle_info.result)
@@ -145,11 +166,22 @@ export default function BattleReplayDialog(props) {
             setSnapGained(be.battle_info.snap_amount)
             setIsPlaying(false)
             setShowResult(false)
+
             setCharAttackSprite(sprites_lib.getCharSpriteSource(be.char.character_class, 'attack'))
             setCharAttackFrames(sprites_lib.getCharSpriteFrames(be.char.character_class).attack)
             setCharWidth(sprites_lib.getCharSpriteFrames(be.char.character_class).width)
             setCharFacing(sprites_lib.getCharSpriteFrames(be.char.character_class).facing)
-            // setEnemAttackSprite()
+            setCharReactionSprite(sprites_lib.getCharSpriteSource(be.char.character_class, 'idle'))
+            setCharReactionFrames(sprites_lib.getCharSpriteFrames(be.char.character_class).idle)
+            
+            setEnemAttackSprite(sprites_lib.getEnemSpriteSource(be.battle_info.dungeon_type, be.battle_info.tier, 'attack'))
+            setEnemAttackFrames(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).attack)
+            setEnemWidth(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).width)
+            setEnemFacing(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).facing)
+            setEnemReactionSprite(sprites_lib.getEnemSpriteSource(be.battle_info.dungeon_type, be.battle_info.tier, 'idle'))
+            setEnemReactionFrames(sprites_lib.getEnemSpriteFrames(be.battle_info.dungeon_type, be.battle_info.tier).idle)
+
+            setPlaybackTrigger(playbackTrigger => playbackTrigger + 1)
         }
     }, [props.battleId])
 
@@ -182,7 +214,7 @@ export default function BattleReplayDialog(props) {
                             <Grid item xs={12}>
                                 <Typography variant='h6' sx={{ mb: 2 }}>BATTLE REPLAY</Typography>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item container xs={6} justifyContent='end' sx={{mb:1}}>
                                 <CharacterAnimator
                                     attackSpriteSource={charAttackSprite}
                                     attackMaxFrames={charAttackFrames}
@@ -190,17 +222,20 @@ export default function BattleReplayDialog(props) {
                                     reactionSpriteSource={charReactionSprite}
                                     reactionMaxFrames={charReactionFrames}
                                     playbackTrigger={playbackTrigger}
+                                    hp={charHp}
                                     style={{ transform: charFacing == 'left' ? `scaleX(-1)`: `scaleX(1)` }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item container xs={6} justifyContent='left' sx={{mb:1}}>
                             <CharacterAnimator
-                                    attackSpriteSource={charAttackSprite}
-                                    attackMaxFrames={charAttackFrames}
-                                    frameWidth={charWidth}
-                                    reactionSpriteSource={charReactionSprite}
-                                    reactionMaxFrames={charReactionFrames}
+                                    attackSpriteSource={enemAttackSprite}
+                                    attackMaxFrames={enemAttackFrames}
+                                    frameWidth={enemWidth}
+                                    reactionSpriteSource={enemReactionSprite}
+                                    reactionMaxFrames={enemReactionFrames}
                                     playbackTrigger={playbackTrigger}
+                                    hp={enemHp}
+                                    style={{ transform: enemFacing == 'left' ? `scaleX(1)`: `scaleX(-1)` }}
                                 />
                             </Grid>
 
@@ -250,8 +285,6 @@ export default function BattleReplayDialog(props) {
                                 <Button onClick={handlePlay} variant='outlined'>Play</Button>
                             </Grid>
                         </Grid>
-
-
                     </DialogActions>
                 </Container>
             </Dialog>
