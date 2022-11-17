@@ -141,7 +141,8 @@ export default function FixedContainer(props) {
                 openReplay={openReplay} 
                 setOpenReplay={setOpenReplay} 
                 battleEvents={battleEvents}
-                battleId={battleId}    
+                battleId={battleId}
+                setTrackSelected={props.setTrackSelected}    
             />
             <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
@@ -188,7 +189,7 @@ export default function FixedContainer(props) {
                                 <Typography variant="body">{`${dungeons_lib.dungeon_tiers[tierIndex].loot_range} ${dungeons_lib.dungeons[props.dungeonSelected].dungeon_loot} tokens`}</Typography>
                             </Grid>
                             <Grid item xs={12} sx={{ mb: 2 }}>
-                                <Typography variant="body">{`${dungeons_lib.dungeon_tiers[tierIndex].loot_range} SNAP tokens`}</Typography>
+                                <Typography variant="body">{`0-${dungeons_lib.dungeon_tiers[tierIndex].max_loot} SNAP tokens`}</Typography>
                             </Grid>
 
                             {/* <Grid item xs={12} sx={{ mt: 4 }}>

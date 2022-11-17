@@ -1,17 +1,15 @@
 import * as React from 'react';
 import Image from 'next/image'
+import {Howl, Howler} from 'howler';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Container, Box, Grid, Typography, LinearProgress, Divider, Button } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import Slide from '@mui/material/Slide';
+import { Container, Box, Grid, Typography, LinearProgress, Divider, Button, Dialog, DialogActions, DialogContent, Slide } from '@mui/material';
+
 import LoadingBackdrop from '../backdrop'
+import CharacterAnimator from './characterAnimator';
 
 import * as dungeons_lib from "../library/dungeonsLib"
 import * as sprites_lib from "../library/spriteRef"
 import * as crafting_recipe from "../library/craftingRecipeLib"
-import CharacterAnimator from './characterAnimator';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -23,6 +21,8 @@ export default function BattleReplayDialog(props) {
     const [isPlaying, setIsPlaying] = React.useState(false)
     const [playbackTrigger, setPlaybackTrigger] = React.useState(0)
 
+    const [charExp, setCharExp] = React.useState(0)
+    const [tier, setTier] = React.useState(0)
     //game states
     const [charHp, setCharHp] = React.useState(0)
     const [charDef, setCharDef] = React.useState(0)
@@ -79,6 +79,7 @@ export default function BattleReplayDialog(props) {
     }
 
     const handlePlay = () => {
+        props.setTrackSelected(4)
         setResult(0)
         setShowResult(false)
         setPlaybackTrigger(0)
@@ -166,6 +167,8 @@ export default function BattleReplayDialog(props) {
             setSnapGained(be.battle_info.snap_amount)
             setIsPlaying(false)
             setShowResult(false)
+            setCharExp(be.char.exp)
+            setTier(be.battle_info.tier)
 
             setCharAttackSprite(sprites_lib.getCharSpriteSource(be.char.character_class, 'attack'))
             setCharAttackFrames(sprites_lib.getCharSpriteFrames(be.char.character_class).attack)
@@ -191,9 +194,9 @@ export default function BattleReplayDialog(props) {
         setCharMaxHp(be.char.hp)
         setCharMaxDef(be.char.def)
 
+        setEnemMaxHp(charExp < 100 && tier == 0 ? (be.enem.hp * 4) : be.enem.hp)
         setEnemHp(be.enem.hp)
         setEnemDef(be.enem.def)
-        setEnemMaxHp(be.enem.hp)
         setEnemMaxDef(be.enem.def)
     }
 
@@ -244,15 +247,15 @@ export default function BattleReplayDialog(props) {
                                     <LinearProgress variant='determinate' color='error' value={charHp / charMaxHp * 100} sx={{ height: 15, width:'80%'  }}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <LinearProgress variant='determinate' color='error' value={(enemHp / enemMaxHp) * 100} sx={{ height: 15, width:'80%'  }}/>
+                                    <LinearProgress variant='determinate' color='error' value={enemHp / enemMaxHp  * 100} sx={{ height: 15, width:'80%'  }}/>
                                 </Grid>
                             </Grid>
                             <Grid item container xs={12} spacing={2}>
                             <Grid item xs={6}>
-                                    <LinearProgress variant='determinate' value={(charDef / charMaxDef) * 100} sx={{ height: 15, width:'80%', mt:.2 }}/>
+                                    <LinearProgress variant='determinate' color='inherit' value={(charDef / charMaxDef) * 100} sx={{ height: 15, width:'80%', mt:.2 }}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <LinearProgress variant='determinate' value={(enemDef / enemMaxDef) * 100} sx={{ height: 15, width:'80%', mt:.2  }}/>
+                                    <LinearProgress variant='determinate' color='inherit' value={(enemDef / enemMaxDef) * 100} sx={{ height: 15, width:'80%', mt:.2  }}/>
                                 </Grid>
                             </Grid>
                         </Grid>

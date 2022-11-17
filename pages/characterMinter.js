@@ -1,19 +1,18 @@
 import * as React from 'react';
+import Image from 'next/image'
 import Router from 'next/router'
 import { useAccount } from 'wagmi'
 
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid'
-import { Button, Typography, TextField } from '@mui/material';
-import Image from 'next/image'
+import { Button, Typography, TextField, Box, Container, Grid } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import LoadingBackdrop from '../components/backdrop';
+
+import ConnectButton from '../components/wallet/connectButton';
+
 import * as char_mint_lib from "../components/library/characterMintingLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
-import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
     const { address } = useAccount()

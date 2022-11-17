@@ -2,7 +2,7 @@ export const char_frames = {
     viking:{
         attack:5,
         hurt:2,
-        death:6,
+        death:5,
         idle:4,
         width: 72,
         facing:'left'
@@ -10,7 +10,7 @@ export const char_frames = {
     woodcutter:{
         attack:5,
         hurt:2,
-        death:6,
+        death:5,
         idle:4,
         width: 48,
         facing:'right'
@@ -26,7 +26,7 @@ export const char_frames = {
     troll:{
         attack:3,
         hurt:2,
-        death:6,
+        death:5,
         idle:4,
         width: 72,
         facing:'left'
@@ -34,7 +34,7 @@ export const char_frames = {
     amphibian:{
         attack:5,
         hurt:2,
-        death:6,
+        death:5,
         idle:4,
         width: 72,
         facing:'left'
@@ -42,7 +42,7 @@ export const char_frames = {
     graverobber:{
         attack:5,
         hurt:2,
-        death:6,
+        death:5,
         idle:4,
         width: 48,
         facing:'right'

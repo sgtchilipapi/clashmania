@@ -1,20 +1,15 @@
 import * as React from 'react';
 import Image from 'next/image'
+import Router from 'next/router';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Container, Box, Grid, Typography, LinearProgress, Divider, Button } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
+
+import { Container, Box, Grid, Typography, LinearProgress, Divider, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
 
 import LoadingBackdrop from '../backdrop'
 
 import * as eqpt_details_lib from '../library/equipmentDetailsLib';
 import * as c_apis from '../../random-clash-contracts/api/contracts/contracts-api'
 import * as s_apis from '../../random-clash-contracts/api/subgraphs/subgraphs-api'
-import Router from 'next/router';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;

@@ -2,16 +2,16 @@ import * as React from 'react';
 import Router from 'next/router'
 import Image from 'next/image'
 import CssBaseline from '@mui/material/CssBaseline';
-
 import {useAccount} from 'wagmi'
+
 import { Container, Box, Grid, Typography, LinearProgress, Divider, Button } from '@mui/material';
 
 import EquipmentItem from '../components/equipments/equipmentItem';
 import LoadingBackdrop from '../components/backdrop'
+import ConnectButton from '../components/wallet/connectButton';
 
 import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
 import * as char_details_lib from '../components/library/characterDetailsLib';
-import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
     const {address} = useAccount()

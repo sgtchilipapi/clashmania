@@ -1,15 +1,14 @@
+import React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-// import { ethers } from 'hardhat'
-import WalletAuth from '../components/walletAuth'
 import { useAccount } from 'wagmi'
+
 import { Box } from '@mui/material'
 
-import React from 'react'
 import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
 
-export default function Home() {
+export default function Home(props) {
   const {address} = useAccount()
 
   return (

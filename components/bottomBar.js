@@ -9,14 +9,35 @@ import BalconyIcon from '@mui/icons-material/Balcony';
 import StadiumIcon from '@mui/icons-material/Stadium';
 import WalletIcon from '@mui/icons-material/Wallet';
 
-export default function BottomBar() {
+export default function BottomBar(props) {
   const [value, setValue] = React.useState(0);
 
-  const toCharacters = () => Router.push('/characters')
-  const toEquipments = () => Router.push('/equipments')
-  const toWallet = () => Router.push('/wallet')
-  const toDungeons = () => Router.push('/dungeons')
-  const toArena = () => Router.push('/arena')
+  const toCharacters = () => {
+    props.setTrackSelected(1)
+    Router.push('/characters')
+
+  }
+  const toEquipments = () => {
+    props.setTrackSelected(2)
+    Router.push('/equipments')
+
+  }
+  const toWallet = () => {
+    props.setTrackSelected(0)
+    Router.push('/wallet')
+
+  }
+
+  const toDungeons = () => {
+    props.setTrackSelected(3)
+    Router.push('/dungeons')
+
+  }
+  const toArena = () => {
+    props.setTrackSelected(5)
+    Router.push('/arena')
+
+  }
 
   return (
     <Box sx={{ width: 'auto', position: 'fixed', bottom: 0, left: 0, right: 0}}>

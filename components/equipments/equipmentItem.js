@@ -1,12 +1,13 @@
 import * as React from 'react';
+import Router from 'next/router';
 import CssBaseline from '@mui/material/CssBaseline';
+
 import { Container, Box, Typography, Tooltip, IconButton, Avatar } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import * as c_apis from "../../random-clash-contracts/api/contracts/contracts-api"
 import * as s_apis from "../../random-clash-contracts/api/subgraphs/subgraphs-api"
 import * as eqpt_details_lib from "../library/equipmentDetailsLib"
-import Router from 'next/router';
 
 export default function EquipmentItem(props) {
     const [eqptItem, setEqptItem] = React.useState({})

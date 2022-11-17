@@ -1,23 +1,21 @@
 import * as React from 'react';
 import Router from 'next/router'
+import Image from 'next/image'
 import { useAccount } from 'wagmi'
 
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid'
-import { Button, Typography, Avatar } from '@mui/material';
-import Image from 'next/image'
+import { Button, Typography, Avatar, Box, Container, Grid } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 import LoadingBackdrop from '../components/backdrop';
+import ConnectButton from '../components/wallet/connectButton';
 
 import * as eqpt_mint_lib from "../components/library/equipmentMintingLib"
 import * as recipe_lib from "../components/library/craftingRecipeLib"
 import * as tokens_lib from "../components/library/tokensLib"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
-import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
     const { address } = useAccount()
@@ -72,6 +70,7 @@ export default function FixedContainer(props) {
 
     React.useEffect(() => {
         getRecipe()
+        getMintedFreeStatus()
     }, [eqptIndex])
 
     const prevEqpt = () => setEqptIndex(eqptIndex > 0 ? eqptIndex => eqptIndex - 1 : 0)
@@ -334,7 +333,7 @@ export default function FixedContainer(props) {
         characterExp > 99 ? didMintFree ?
             <Typography variant='body2'>*Free mint has already been claimed.</Typography> :
             <Typography variant='body2'>*Free mint is available!</Typography> :
-            <Typography variant='body2'>{props.characterSelected ? `*Character needs ${201 - characterExp} more exp point${201 - characterExp > 1 ? 's': ''} to get a free ${eqpt_mint_lib.equipmentName(eqptIndex)} mint.`: `No character selected.`}</Typography>
+            <Typography variant='body2'>{props.characterSelected ? `*Character needs ${100 - characterExp} more exp point${100 - characterExp > 1 ? 's': ''} to get a free ${eqpt_mint_lib.equipmentName(eqptIndex)} mint.`: `No character selected.`}</Typography>
     )
 
     const mintButton = (

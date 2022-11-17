@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useAccount } from 'wagmi'
+
 import List from '@mui/material/List';
 
 import CharacterItem from './characterItem';

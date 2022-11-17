@@ -1,10 +1,8 @@
 import * as React from 'react';
 import Router from 'next/router'
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid'
-import { Button, Typography } from '@mui/material';
+
+import { Button, Typography, Grid, Box, Container } from '@mui/material';
 
 import LoadingBackdrop from '../components/backdrop';
 import ConnectButton from '../components/wallet/connectButton';

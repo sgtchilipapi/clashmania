@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ListItem, ListItemButton, ListItemText, Avatar, ListItemAvatar } from '@mui/material';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 import * as eqpt_details_lib from "../library/equipmentDetailsLib"
 

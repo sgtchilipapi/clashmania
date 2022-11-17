@@ -4,13 +4,14 @@ import {useAccount} from 'wagmi'
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box, Grid, Button, Typography } from '@mui/material';
+
 import CharactersList from '../components/characters/characterList';
 import LoadingBackdrop from '../components/backdrop';
+import ConnectButton from '../components/wallet/connectButton';
 
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
 import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
 import { getCharacterImage } from '../components/library/characterDetailsLib';
-import ConnectButton from '../components/wallet/connectButton';
 
 
 export default function FixedContainer(props) {

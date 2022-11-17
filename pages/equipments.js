@@ -4,11 +4,12 @@ import { useAccount } from 'wagmi'
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box, Grid, Button, Typography } from '@mui/material';
+
 import EquipmentList from '../components/equipments/equipmentList';
 import LoadingBackdrop from '../components/backdrop';
+import ConnectButton from '../components/wallet/connectButton';
 
 import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
-import ConnectButton from '../components/wallet/connectButton';
 
 export default function FixedContainer(props) {
   const { address } = useAccount()

@@ -29,7 +29,8 @@ export const dungeon_tiers = [
         enemy_level: '5',
         exp_given: '20',
         stat_range: '1',
-        loot_range: '1-3'
+        loot_range: '1-3',
+        max_loot: '3'
     },
     {
         tier_index: 1,
@@ -37,7 +38,8 @@ export const dungeon_tiers = [
         enemy_level: '15',
         exp_given: '40',
         stat_range: '3',
-        loot_range: '2-6'
+        loot_range: '2-6',
+        max_loot: '6'
     },
     {
         tier_index: 2,
@@ -45,7 +47,8 @@ export const dungeon_tiers = [
         enemy_level: '40',
         exp_given: '60',
         stat_range: '6',
-        loot_range: '3-9'
+        loot_range: '3-9',
+        max_loot: '9'
     },
     {
         tier_index: 3,
@@ -53,7 +56,8 @@ export const dungeon_tiers = [
         enemy_level: '65',
         exp_given: '80',
         stat_range: '10',
-        loot_range: '4-12'
+        loot_range: '4-12',
+        max_loot: '12'
     },
     {
         tier_index: 4,
@@ -61,7 +65,8 @@ export const dungeon_tiers = [
         enemy_level: '100',
         exp_given: '100',
         stat_range: '15',
-        loot_range: '5-15'
+        loot_range: '5-15',
+        max_loot: '15'
     }
 ]
 
