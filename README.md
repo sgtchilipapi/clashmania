@@ -2,6 +2,8 @@
 
 A trustless Defi Role-Playing-Game on the blockchain.
 
+Demo is available here: https://random-clash-app.vercel.app/
+
 This project is a complete system of a modern RPG except that it can be deployed on the blockchain for better security and transparency.
 It has:
 
