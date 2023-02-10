@@ -8,8 +8,8 @@ import { Container, Box, Grid, Typography, LinearProgress, Divider, Button, Dial
 import LoadingBackdrop from '../backdrop'
 
 import * as eqpt_details_lib from '../library/equipmentDetailsLib';
-import * as c_apis from '../../random-clash-contracts/api/contracts/contracts-api'
-import * as s_apis from '../../random-clash-contracts/api/subgraphs/subgraphs-api'
+import * as c_apis from '../../clashmania-contracts/api/contracts/contracts-api'
+import * as s_apis from '../../clashmania-contracts/api/subgraphs/subgraphs-api'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;

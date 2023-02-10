@@ -8,7 +8,7 @@ import { Howl, Howler } from 'howler';
 
 import EquipmentDialog from '../components/equipments/equipmentDetails';
 
-import networks from '../random-clash-contracts/app-config/networks';
+import networks from '../clashmania-contracts/app-config/networks';
 
 import {
   WagmiConfig,
@@ -30,12 +30,12 @@ const { chains, provider, webSocketProvider } = configureChains(
   [
     jsonRpcProvider({
       rpc: () => ({
-        http: networks.endpoint.http,
+        http: networks.fantom.http,
       }),
     }),
     jsonRpcProvider({
       rpc: () => ({
-        http: 'https://rpc.ankr.com/polygon_mumbai',
+        http: 'https://rpc.ankr.com/fantom/36fdae799ada936183156f53af23bd097751d19137e62e1b9c03f8ec8793395a',
       }),
     }),
   ],

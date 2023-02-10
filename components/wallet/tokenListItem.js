@@ -5,7 +5,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 import * as eqpt_details_lib from "../library/equipmentDetailsLib"
 import * as tokens_lib from '../library/tokensLib'
-import * as c_apis from "../../random-clash-contracts/api/contracts/contracts-api"
+import * as c_apis from "../../clashmania-contracts/api/contracts/contracts-api"
 
 export default function TokenListItem(props) {
     const {address} = useAccount()

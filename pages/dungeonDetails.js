@@ -15,7 +15,7 @@ import LoadingBackdrop from '../components/backdrop';
 import BattleReplayDialog from '../components/dungeons/battleReplay';
 import ConnectButton from '../components/wallet/connectButton';
 
-import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
+import * as c_apis from "../clashmania-contracts/api/contracts/contracts-api"
 import * as dungeons_lib from "../components/library/dungeonsLib"
 
 
@@ -73,7 +73,7 @@ export default function FixedContainer(props) {
     }
 
     const listenToVRF = async () => {
-        setLoadingText('(2/2) Waiting for VRF fulfillment...')
+        setLoadingText('(2/2) Waiting for VRF fulfillment... (taking more than 1 min.?, hit refresh)')
         const contract = await c_apis.periphery.chainlink.dgns_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user) => {
             if (user == address) {

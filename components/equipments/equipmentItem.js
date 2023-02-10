@@ -5,8 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box, Typography, Tooltip, IconButton, Avatar } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-import * as c_apis from "../../random-clash-contracts/api/contracts/contracts-api"
-import * as s_apis from "../../random-clash-contracts/api/subgraphs/subgraphs-api"
+import * as c_apis from "../../clashmania-contracts/api/contracts/contracts-api"
+import * as s_apis from "../../clashmania-contracts/api/subgraphs/subgraphs-api"
 import * as eqpt_details_lib from "../library/equipmentDetailsLib"
 
 export default function EquipmentItem(props) {

@@ -12,7 +12,7 @@ import LoadingBackdrop from '../components/backdrop';
 import ConnectButton from '../components/wallet/connectButton';
 
 import * as char_mint_lib from "../components/library/characterMintingLib"
-import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
+import * as c_apis from "../clashmania-contracts/api/contracts/contracts-api"
 
 export default function FixedContainer(props) {
     const { address } = useAccount()
@@ -95,7 +95,7 @@ export default function FixedContainer(props) {
     }
 
     const listenToVRF = async () => {
-        setLoadingText('(2/2) Waiting for VRF fulfillment...')
+        setLoadingText('(2/2) Waiting for VRF fulfillment... (taking more than 1 min.?, hit refresh)')
         const contract = await c_apis.periphery.chainlink.ctrs_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
             // console.log(contract.listeners("RequestFulfilled"))

@@ -14,8 +14,8 @@ import ConnectButton from '../components/wallet/connectButton';
 import * as eqpt_mint_lib from "../components/library/equipmentMintingLib"
 import * as recipe_lib from "../components/library/craftingRecipeLib"
 import * as tokens_lib from "../components/library/tokensLib"
-import * as c_apis from "../random-clash-contracts/api/contracts/contracts-api"
-import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
+import * as c_apis from "../clashmania-contracts/api/contracts/contracts-api"
+import * as s_apis from "../clashmania-contracts/api/subgraphs/subgraphs-api"
 
 export default function FixedContainer(props) {
     const { address } = useAccount()
@@ -182,7 +182,7 @@ export default function FixedContainer(props) {
     }
 
     const listenToVRF = async () => {
-        setLoadingText('(2/2) Waiting for VRF fulfillment...')
+        setLoadingText('(2/2) Waiting for VRF fulfillment... (taking more than 1 min.?, hit refresh)')
         const contract = await c_apis.periphery.chainlink.eqpts_vrf.getListener()
         contract.on("RequestFulfilled", (request_id, numWords, user, experimental) => {
             if (user == address) {

@@ -9,7 +9,7 @@ import LoadingBackdrop from '../components/backdrop';
 import ConnectButton from '../components/wallet/connectButton';
 import DungeonList from '../components/dungeons/dungeonsList';
 
-import * as s_apis from "../random-clash-contracts/api/subgraphs/subgraphs-api"
+import * as s_apis from "../clashmania-contracts/api/subgraphs/subgraphs-api"
 import * as dungeons_lib from "../components/library/dungeonsLib"
 
 export default function FixedContainer(props) {

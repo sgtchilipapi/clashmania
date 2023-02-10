@@ -1,4 +1,4 @@
-const tokens = require('../../random-clash-contracts/app-config/deployments')
+const tokens = require('../../clashmania-contracts/app-config/deployments')
 
 export function getRecipe(item_type){
     const [main_m, main_a, main_tag, main_name] = getMainMaterial(item_type);

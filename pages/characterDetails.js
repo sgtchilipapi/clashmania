@@ -10,7 +10,7 @@ import EquipmentItem from '../components/equipments/equipmentItem';
 import LoadingBackdrop from '../components/backdrop'
 import ConnectButton from '../components/wallet/connectButton';
 
-import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
+import * as apis from "../clashmania-contracts/api/contracts/contracts-api"
 import * as char_details_lib from '../components/library/characterDetailsLib';
 
 export default function FixedContainer(props) {

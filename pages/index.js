@@ -11,7 +11,7 @@ import { Box, Container, Typography, Button } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-import * as apis from "../random-clash-contracts/api/contracts/contracts-api"
+import * as apis from "../clashmania-contracts/api/contracts/contracts-api"
 import LetsGoCard from '../components/index/letsGoCard'
 
 export default function Home(props) {
@@ -24,7 +24,7 @@ export default function Home(props) {
       <CssBaseline />
       <div>
         <Head>
-          <title >Random Clash App</title>
+          <title >CLASHMANIA</title>
           <meta name="description" content="A complete on-chain Role-Playing-Game with character progression, item & equipment crafting, integral Defi economy and a breath-taking battle system." />
           {/* <link rel="icon" href="/rc-icon.ico" /> */}
         </Head>
@@ -34,7 +34,7 @@ export default function Home(props) {
               <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main', pt:2 }}>
                 <LetsGoCard 
                   title={'This game is free to play!'}
-                  body={`To start or resume your clashing journey, please make sure to connect to the Polygon (MATIC) Blockchain and click the button below.`}
+                  body={`To start or resume your clashing journey, please make sure to connect to the Fantom (FTM) Blockchain and click the button below.`}
                 />
               </Box>
             </Container>

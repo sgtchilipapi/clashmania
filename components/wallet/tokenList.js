@@ -10,7 +10,7 @@ export default function TokenList(props) {
     const materials = ['clank', 'boom', 'thump', 'clink', 'snap']
     const catalysts = ['yellowspark', 'whitespark', 'redspark', 'bluespark']
     const consumables = ['enerlink']
-    const pool_tokens = ['clankmatic', 'clankboom', 'clankthump', 'clankclink', 'clanksnap']
+    const pool_tokens = ['clankftm', 'clankboom', 'clankthump', 'clankclink', 'clanksnap']
     return (
         <>
             <List dense sx={{ width: '100%', bgcolor: 'background.paper' }}>

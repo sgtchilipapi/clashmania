@@ -11,7 +11,7 @@ export default function LetsGoCard(props) {
   return (
     <Card>
       <Typography gutterBottom variant="h6" color="primary.main" sx={{ mt: 1 }}>
-        WELCOME TO RANDOM CLASH!
+        WELCOME TO CLASHMANIA!
       </Typography>
       <Grid container>
         <Grid item container xs={6} style={{transform: 'scaleX(-1)'}} justifyContent='left'>
