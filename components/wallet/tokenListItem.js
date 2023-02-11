@@ -11,6 +11,7 @@ export default function TokenListItem(props) {
     const { address } = useAccount()
     const [tokenBalance, setTokenBalance] = React.useState(0)
     const [underlyingLpBalance, setUnderlyingLpBalance] = React.useState(0)
+    const [approvedLP, setApprovedLP] = React.useState(0)
     // const [tokenImage, setTokenImage] = React.useState('')
 
     React.useEffect(() => {
@@ -21,6 +22,7 @@ export default function TokenListItem(props) {
 
     const getTokenBalance = async () => {
         props.setIsLoading(true)
+        props.setLoadingText("Fetching token balances...")
         let balance = await c_apis.core.tokens.balanceOf(props.token_name, address)
         setTokenBalance(balance)
         props.setIsLoading(false)
@@ -32,6 +34,8 @@ export default function TokenListItem(props) {
             props.setIsLoading(true)
             let balance = await c_apis.core.tokens.balanceOf(tokens_lib.getUnderlyingLP(props.token_name), address)
             setUnderlyingLpBalance(balance)
+            let _approvedLP = await c_apis.core.tokens.allowance(tokens_lib.getUnderlyingLP(props.token_name),address, props.token_name)
+            setApprovedLP(_approvedLP)
             props.setIsLoading(false)
         }
 
@@ -43,7 +47,8 @@ export default function TokenListItem(props) {
 
     const handleMintCatalyst = async () => {
         props.setIsLoading(true)
-        const amount = parseInt(underlyingLpBalance) % 10;
+        props.setLoadingText("Waiting for transaction confirmation...")
+        const amount = parseInt(parseInt(underlyingLpBalance) / 10);
         console.log(`Amont ${amount}`)
         await c_apis.core.tokens.mint(props.token_name, address, amount)
         props.setIsLoading(false)
@@ -51,9 +56,11 @@ export default function TokenListItem(props) {
 
     const actionButton = (
         (props.token_name == "yellowspark" || props.token_name == "whitespark" || props.token_name == "redspark" || props.token_name == "bluespark") ?
-            parseInt(underlyingLpBalance) >= 10 ?
-                <Button onClick={handleMintCatalyst}>{`Mint ${tokens_lib.getTokenTickerByName(props.token_name)}`}</Button> :
-                <a target="_blank" href={tokens_lib.getSpookyAddress(props.token_name)}><Button>{`Get ${tokens_lib.getTokenTickerByName(tokens_lib.getUnderlyingLP(props.token_name))} LP`}</Button></a> :
+                parseInt(approvedLP) < 10 ? 
+                <Button onClick={handleMintCatalyst}>{`Approve ${tokens_lib.getTokenTickerByName(props.token_name)}`}</Button> :
+                    parseInt(underlyingLpBalance) >= 10 ?
+                    <Button onClick={handleMintCatalyst}>{`Mint ${tokens_lib.getTokenTickerByName(props.token_name)}`}</Button> :
+                <a target="_blank" rel="noreferrer" href={tokens_lib.getSpookyAddress(props.token_name)}><Button>{`Get ${tokens_lib.getTokenTickerByName(tokens_lib.getUnderlyingLP(props.token_name))} LP`}</Button></a> :
             ""
     )
 

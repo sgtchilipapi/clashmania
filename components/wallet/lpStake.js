@@ -101,7 +101,7 @@ export default function LpStake(props) {
         setIsLoading(false)
     }
 
-    const getLpLink = (<a target="_blank" href='https://spooky.fi/#/add/0xA13473ffb118655cdF6F15684Ee6CCE4E4aeaf26/FTM'>
+    const getLpLink = (<a target="_blank" rel="noreferrer" href='https://spooky.fi/#/add/0xA13473ffb118655cdF6F15684Ee6CCE4E4aeaf26/FTM'>
         <Button align='left' sx={{ textDecoration: 'underline' }}>MINT LP</Button>
     </a>)
 

@@ -26,6 +26,7 @@ export default function TokenList(props) {
                                     key={index}
                                     token_name={token}
                                     setIsLoading={props.setIsLoading}
+                                    setLoadingText={props.setLoadingText}
                                 />
                             );
                         }))
@@ -43,6 +44,7 @@ export default function TokenList(props) {
                                     key={index}
                                     token_name={token}
                                     setIsLoading={props.setIsLoading}
+                                    setLoadingText={props.setLoadingText}
                                 />
                             );
                         }))
@@ -60,6 +62,7 @@ export default function TokenList(props) {
                                     key={index}
                                     token_name={token}
                                     setIsLoading={props.setIsLoading}
+                                    setLoadingText={props.setLoadingText}
                                 />
                             );
                         }))
@@ -77,6 +80,7 @@ export default function TokenList(props) {
                                     key={index}
                                     token_name={token}
                                     setIsLoading={props.setIsLoading}
+                                    setLoadingText={props.setLoadingText}
                                 />
                             );
                         }))

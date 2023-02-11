@@ -31,12 +31,14 @@ export default function Wallet() {
                             <Grid item xs={12} sx={{mt:2}}>
                                 <TokenList 
                                     setIsLoading={setIsLoading}
+                                    setLoadingText={setLoadingText}
                                 />
                             </Grid>
                             <Grid item xs={12} sx={{mt:2}}>
                                 <FarmList 
                                     setIsLoading={setIsLoading}
                                     setLpStakeOpen={setLpStakeOpen}
+                                    setLoadingText={setLoadingText}
                                 />
                             </Grid>
                         </Grid>
@@ -46,6 +48,7 @@ export default function Wallet() {
             <LpStake
                 lpStakeOpen={lpStakeOpen}
                 setLpStakeOpen={setLpStakeOpen}
+                setLoadingText={setLoadingText}
             />
         </React.Fragment>
     );
