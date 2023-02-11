@@ -2,37 +2,34 @@ import * as React from 'react';
 import { useAccount } from 'wagmi'
 import List from '@mui/material/List';
 
-import TokenListItem from './tokenListItem';
 import FarmListItem from './farmListItem';
 import { Typography } from '@mui/material';
 
-export default function TokenList(props) {
+export default function FarmList(props) {
     const { address } = useAccount()
-    const materials = ['clank', 'boom', 'thump', 'clink', 'snap']
-    const catalysts = ['yellowspark', 'whitespark', 'redspark', 'bluespark']
-    const consumables = ['enerlink']
-    const pool_tokens = ['clankboom', 'clankthump', 'clankclink', 'clanksnap']
+    const pairs = ['clankftm']
     return (
         <>
             <List dense sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <Typography variant='body1'>{address ? 'Material Tokens':''}</Typography>
+            <Typography variant='body1'>{address ? 'Farm':''}</Typography>
                 {
                     !address ?
-                    <Typography variant='body1' sx={{m:1}}>Please connect your wallet to view your Random Clash tokens here.</Typography> :
+                    <Typography variant='body1' sx={{m:1}}></Typography> :
                         
-                        (materials.map((token, index) => {
+                        (pairs.map((token, index) => {
                             return (
-                                <TokenListItem
+                                <FarmListItem
                                     key={index}
                                     token_name={token}
                                     setIsLoading={props.setIsLoading}
+                                    setLpStakeOpen={props.setLpStakeOpen}
                                 />
                             );
                         }))
                 }
             </List>
 
-            <List dense sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            {/* <List dense sx={{ width: '100%', bgcolor: 'background.paper' }}>
             <Typography variant='body1'>{address ? 'Catalyst Tokens':''}</Typography>
                 {
                     !address ?
@@ -81,7 +78,7 @@ export default function TokenList(props) {
                             );
                         }))
                 }
-            </List>
+            </List> */}
         </>
     );
 }

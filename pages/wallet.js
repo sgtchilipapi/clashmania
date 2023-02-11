@@ -7,11 +7,13 @@ import { Button, Typography, Grid, Box, Container } from '@mui/material';
 import LoadingBackdrop from '../components/backdrop';
 import ConnectButton from '../components/wallet/connectButton';
 import TokenList from '../components/wallet/tokenList';
-
+import FarmList from '../components/wallet/farmList';
+import LpStake from '../components/wallet/lpStake';
 
 export default function Wallet() {
     const [isLoading, setIsLoading] = React.useState(false)
     const [loadingText, setLoadingText] = React.useState('loading data...')
+    const [lpStakeOpen, setLpStakeOpen] = React.useState(false)
     return (
 
         <React.Fragment>
@@ -31,10 +33,20 @@ export default function Wallet() {
                                     setIsLoading={setIsLoading}
                                 />
                             </Grid>
+                            <Grid item xs={12} sx={{mt:2}}>
+                                <FarmList 
+                                    setIsLoading={setIsLoading}
+                                    setLpStakeOpen={setLpStakeOpen}
+                                />
+                            </Grid>
                         </Grid>
                     </Box>
                 </Container>
             </Box>
+            <LpStake
+                lpStakeOpen={lpStakeOpen}
+                setLpStakeOpen={setLpStakeOpen}
+            />
         </React.Fragment>
     );
 }
