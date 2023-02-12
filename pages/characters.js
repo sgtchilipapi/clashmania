@@ -35,7 +35,7 @@ export default function FixedContainer(props) {
   }
 
   const createButton = (
-    address ? <Link href="/characterMinter"><Button variant='outlined' sx={{ mt: 2 }}>Create New Character</Button></Link> :
+    address ? <Link href="/characterMinter"><Button variant='outlined' sx={{ mt: 2,color:'white' }}>Create New Character</Button></Link> :
     <ConnectButton />
   )
 
@@ -43,9 +43,9 @@ export default function FixedContainer(props) {
     <React.Fragment>
       <CssBaseline />
       <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
-      <Box sx={{ bgcolor: '#cfe8fc', height: `${characters.length < 10 ? 100: (equipments.length * 10)}vh`, color: 'primary.main' }}>
+      <Box sx={{ bgcolor: '#cfe8fc', height: `${characters.length < 10 ? 100: (equipments.length * 10)}vh`, color: 'white', backgroundImage: "url('/images/backgrounds/characters.png')", backgroundSize: "cover"}}>
         <Container fixed justify="center" align="center" maxWidth='xs'>
-          <Box sx={{ bgcolor: '#cfe8fc', height: `${characters.length < 10 ? 100: (equipments.length * 10)}vh`, color: 'primary.main' }}>
+          <Box sx={{ bgcolor: 'none', height: `${characters.length < 10 ? 100: (equipments.length * 10)}vh`, color:'primary.main', textShadow:'2px 2px #ffffff' }}>
             <Typography variant='h6' sx={{ mb: 1 }}>YOUR CHARACTERS</Typography>
             <Grid container align='center' justify='center'  sx={{mb:2}}>
               <Grid item xs={12}>

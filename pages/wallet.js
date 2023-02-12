@@ -20,9 +20,9 @@ export default function Wallet() {
             <CssBaseline />
             <LoadingBackdrop isLoading={isLoading} loadingText={'Fetching your token balances...'} />
             
-            <Box sx={{ bgcolor: '#cfe8fc', height: '200vh', color: 'primary.main' }}>
+            <Box sx={{ bgcolor: '#cfe8fc', height: '200vh', color: 'primary.main', backgroundImage: "url('/images/backgrounds/wallet.png')", backgroundSize: "cover" }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
-                    <Box sx={{ bgcolor: '#cfe8fc', height: '200vh', color: 'primary.dark' }} justify="center" align="center">
+                    <Box sx={{ bgcolor: 'none', height: '200vh', color:'primary.main', textShadow:'2px 2px #ffffff' }} justify="center" align="center">
                     <Typography variant='h6'>YOUR WALLET BALANCES</Typography>
                         <Grid container>
                             <Grid item xs={12}>

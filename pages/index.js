@@ -7,7 +7,7 @@ import styles from '../styles/Home.module.css'
 import { useAccount } from 'wagmi'
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { Box, Container, Typography, Button } from '@mui/material'
+import { Box, Container, Typography, Button, Paper } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
@@ -29,15 +29,16 @@ export default function Home(props) {
           {/* <link rel="icon" href="/rc-icon.ico" /> */}
         </Head>
         <main>
-          <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
+          <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main', backgroundImage: "url('/images/backgrounds/index.png')", backgroundSize: "cover"  }}>
             <Container fixed justify="center" align="center" maxWidth='xs'>
-              <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main', pt:2 }}>
-                <LetsGoCard 
-                  title={'This game is free to play!'}
-                  body={`To start or resume your clashing journey, please make sure to connect to the Fantom (FTM) Blockchain and click the button below.`}
-                />
+              <Box sx={{ bgcolor: 'none', height: 'auto', color: 'primary.main', pt: 2}}>
+                  <LetsGoCard
+                    title={'This game is free to play!'}
+                    body={`To start or resume your clashing journey, please make sure to connect to the Fantom (FTM) Blockchain and click the button below.`}
+                  />
               </Box>
             </Container>
+
 
           </Box>
         </main>

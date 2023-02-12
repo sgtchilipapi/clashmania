@@ -48,7 +48,7 @@ export default function TokenListItem(props) {
     const handleMintCatalyst = async () => {
         props.setIsLoading(true)
         props.setLoadingText("Waiting for transaction confirmation...")
-        const amount = parseInt(parseInt(underlyingLpBalance) / 10);
+        const amount = parseInt(parseInt(approvedLP) / 10);
         console.log(`Amont ${amount}`)
         await c_apis.core.tokens.mint(props.token_name, address, amount)
         props.setIsLoading(false)

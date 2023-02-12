@@ -35,8 +35,10 @@ export default function ConnectButton(props) {
     return (
         <Button
             onClick={handleConnectToggle}
-            variant='outlined'>
+            variant='outlined'
+            sx={{textShadow:'.5px 2px #ffffff'}}>
             {walletString}
+            
         </Button>
     );
 }

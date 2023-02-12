@@ -14,9 +14,9 @@ export default function FixedContainer(props) {
         <React.Fragment>
             <CssBaseline />
             {/* <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} /> */}
-            <Box sx={{ bgcolor: '#cfe8fc', height: `100vh`, color: 'primary.main' }}>
+            <Box sx={{ bgcolor: '#cfe8fc', height: `100vh`, color: 'primary.main', backgroundImage: "url('/images/backgrounds/arena.png')", backgroundSize: "cover" }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
-                    <Box sx={{ bgcolor: '#cfe8fc', height: `100vh`, color: 'primary.main' }}>
+                    <Box sx={{ bgcolor: 'none', height: `100vh`, color: 'black' }}>
                         <Typography variant='h6' sx={{ mb: 1 }}>THE ARENA</Typography>
                         <Grid container align='center' justify='center' sx={{mb:2}}>
                             <Grid item xs={12}>

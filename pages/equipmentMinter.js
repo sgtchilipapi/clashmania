@@ -355,7 +355,7 @@ export default function FixedContainer(props) {
         <React.Fragment>
             <CssBaseline />
             <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
-            <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
+            <Box sx={{ bgcolor: 'none', height: '100vh', color: 'black', backgroundImage: "url('/images/backgrounds/equipments.png')", backgroundSize: "cover"  }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
                     <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.dark' }} justify="center" align="center">
                         <Grid container>

@@ -121,9 +121,9 @@ export default function FixedContainer(props) {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
+            <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main', backgroundImage: "url('/images/backgrounds/characters.png')", backgroundSize: "cover" }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
-                    <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main' }}>
+                    <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', color: 'primary.main'  }}>
                         <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
                         <Typography variant='h6'>{props.characterSelected ? `YOUR CHARACTER`: `NO CHARACTER SELECTED`}</Typography>
                         <Grid container align='center' justify='center' display={props.characterSelected ? 'block':'none'}>

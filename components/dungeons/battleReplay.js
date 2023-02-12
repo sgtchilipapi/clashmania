@@ -209,9 +209,10 @@ export default function BattleReplayDialog(props) {
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
+                
             >
                 <Container fixed justify="center" align="center" maxWidth='xs'>
-                    <DialogContent sx={{ color: 'primary.main' }}>
+                    <DialogContent sx={{ color: 'primary.main'}}>
                         <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
                         <Grid container align='center' justify='center'>
                             <Grid item xs={12}>

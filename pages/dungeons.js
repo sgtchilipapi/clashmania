@@ -33,9 +33,9 @@ export default function FixedContainer(props) {
         <React.Fragment>
             <CssBaseline />
             <LoadingBackdrop isLoading={isLoading} loadingText={loadingText} />
-            <Box sx={{ bgcolor: '#cfe8fc', height: `${dungeons.length < 10 ? 100 : (dungeons.length * 10)}vh`, color: 'primary.main' }}>
+            <Box sx={{ bgcolor: '#cfe8fc', height: `${dungeons.length < 10 ? 100 : (dungeons.length * 10)}vh`, color: 'primary.main', backgroundImage: "url('/images/backgrounds/dungeons.png')", backgroundSize: "cover" }}>
                 <Container fixed justify="center" align="center" maxWidth='xs'>
-                    <Box sx={{ bgcolor: '#cfe8fc', height: `${dungeons.length < 10 ? 100 : (dungeons.length * 10)}vh`, color: 'primary.main' }}>
+                    <Box sx={{ bgcolor: 'none', height: `${dungeons.length < 10 ? 100 : (dungeons.length * 10)}vh`, color:'primary.main', textShadow:'2px 2px #ffffff' }}>
                         <Typography variant='h6' sx={{ mb: 1 }}>THE DUNGEONS</Typography>
                         <Grid container align='center' justify='center' sx={{mb:2}}>
                             <Grid item container xs={12}>
